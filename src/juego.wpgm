@@ -1,10 +1,14 @@
 import wollok.game.*
-import pepita.*
+import ConfigGen.*
 import texto.*
 
 program juego {
-	game.title("Juego Base")
-	game.addVisual(pepita)
-	game.addVisual(texto)
+	game.title("Bomberman del Subdesarrollo")
+	game.cellSize(24)
+	
+	game.height(30)
+	game.width(30)
+	game.boardGround("map2.png")
+	config.configuracionInicial()
 	game.start()
 }
