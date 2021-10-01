@@ -4,10 +4,10 @@ import texto.*
 
 program juego {
 	game.title("Bomberman del Subdesarrollo")
-	game.cellSize(24)
+	game.cellSize(60)
 	
-	game.height(30)
-	game.width(30)
+	game.height(14)
+	game.width(14)
 	game.boardGround("map2.png")
 	config.configuracionInicial()
 	game.start()
