@@ -1,14 +1,16 @@
 import wollok.game.*
 import ConfigGen.*
 import texto.*
+import soundProducer.*
 
 program juego {
+	
 	game.title("Bomberman del Subdesarrollo")
 	game.cellSize(60)
 	
 	game.height(14)
 	game.width(14)
-	game.boardGround("map2.png")
+	game.boardGround("fondo2.png")
 	config.configuracionInicial()
 	game.start()
 }

@@ -20,7 +20,7 @@ object soundProducer {
 
 object soundProviderMock {
 	
-	method sound(audioFile) = soundMock
+	method sound(archivoDeAudio) = soundMock
 	
 }
 
