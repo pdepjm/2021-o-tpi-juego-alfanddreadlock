@@ -9,6 +9,8 @@ object config{
 		self.configurarTeclas()
 		self.configurarColisiones()
 		rocas.rocasGenerator()
+		plantasD.plantasGenerator()
+		plantasI.plantasGenerator()
 		
 	}
 	method configurarTeclas(){
@@ -31,7 +33,7 @@ object bomberman{
 	method moverPara(direccion) {
 			posicionAnterior=position
 			posicionSiguiente = direccion.proximaPosicion(position)
-		if(rocas.posiciones().contains(posicionSiguiente)){
+		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)){
 			self.quedarseQuieto()
 		}
 		else if(posicionSiguiente.x()>13 or posicionSiguiente.x()<0 or posicionSiguiente.y()<0 or posicionSiguiente.y()>13){
@@ -56,9 +58,40 @@ object backgroundMusic{
 		sonido.play()
 	}
 }
+/*
 object gestorDeNiveles{
 	var nivel = 0
 	
+}*/
+
+class PlantaD{
+	const property image = "plantaD.png"
+	var property position = game.at(14,0)
+	method posicion()=position
+}
+	
+object plantasD{
+	const property posiciones = [game.at(14,0),game.at(14,1),game.at(14,2),game.at(14,3),game.at(14,4),game.at(14,5),game.at(14,6),game.at(14,7),game.at(14,8),game.at(14,9),game.at(14,10),game.at(14,11),game.at(14,12)]
+	const plantas = []
+	method plantasGenerator(){
+		posiciones.forEach{posicion=>plantas.add(new PlantaD(position = posicion))}
+		plantas.forEach{planta=>game.addVisual(planta)}
+	}
+}
+
+class PlantaI{
+	const property image = "plantaI.png"
+	var property position = game.at(0,0)
+	method posicion()=position
+}
+	
+object plantasI{
+	const property posiciones = [game.at(0,0),game.at(0,1),game.at(0,2),game.at(0,3),game.at(0,4),game.at(0,5),game.at(0,6),game.at(0,7),game.at(0,8),game.at(0,9),game.at(0,10),game.at(0,11),game.at(0,12)]
+	const plantas = []
+	method plantasGenerator(){
+		posiciones.forEach{posicion=>plantas.add(new PlantaI(position = posicion))}
+		plantas.forEach{planta=>game.addVisual(planta)}
+	}
 }
 
 class Roca{
@@ -67,9 +100,8 @@ class Roca{
 	method posicion()=position
 	}
 	
-	
 object rocas{
-	const property posiciones = [game.at(0,1),game.at(0,6),game.at(0,7),game.at(1,1),game.at(1,3),game.at(1,5),game.at(1,7),game.at(1,8),game.at(1,10),game.at(1,12),game.at(2,6),game.at(2,7),game.at(3,1),game.at(3,3),game.at(3,5),game.at(3,10),game.at(3,12),game.at(4,6),game.at(4,7),game.at(5,1),game.at(5,3),game.at(5,5),game.at(5,7),game.at(5,8),game.at(5,10),game.at(5,12),game.at(6,6),game.at(6,7),game.at(7,1),game.at(7,3),game.at(7,5),game.at(7,7),game.at(7,8),game.at(7,9),game.at(7,10), game.at(7,12),game.at(7,13),game.at(9,1),game.at(9,3),game.at(9,5),game.at(9,7),game.at(9,9),game.at(9,10),game.at(9,11),game.at(9,13),game.at(10,1),game.at(10,5),game.at(11,1),game.at(11,3),game.at(11,5),game.at(11,7),game.at(11,9),game.at(11,11),game.at(11,13),game.at(12,13),game.at(13,1),game.at(13,2),game.at(13,3),game.at(13,4),game.at(13,5),game.at(13,6),game.at(13,7),game.at(13,8),game.at(13,9),game.at(13,10),game.at(13,11),game.at(13,12),game.at(13,13)]
+	const property posiciones = [game.at(1,7),game.at(2,1),game.at(2,3),game.at(2,5),game.at(2,7),game.at(2,9),game.at(2,10),game.at(4,1),game.at(4,3),game.at(4,5),game.at(4,7),game.at(4,9),game.at(4,10),game.at(5,7),game.at(6,0),game.at(6,1),game.at(6,2),game.at(6,3),game.at(6,5),game.at(6,6),game.at(6,7),game.at(6,9),game.at(6,0),game.at(7,7),game.at(8,1),game.at(8,3),game.at(8,5),game.at(8,7),game.at(8,9),game.at(8,10),game.at(10,1),game.at(10,3),game.at(10,5),game.at(10,7),game.at(10,9),game.at(10,10),game.at(11,7),game.at(12,1),game.at(12,3),game.at(12,5),game.at(12,7),game.at(12,8),game.at(12,10)]
 	const rocas = []
 	method rocasGenerator(){
 		posiciones.forEach{posicion=>rocas.add(new Roca(position = posicion))}
