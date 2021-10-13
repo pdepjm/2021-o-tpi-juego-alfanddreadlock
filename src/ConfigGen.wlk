@@ -1,11 +1,20 @@
 import wollok.game.*
 import direcciones.*
 import soundProducer.*
+import NPCs.*
+
+const babaEnJuego = []
 
 object config{
 	method configuracionInicial(){
 		
 		game.addVisual(bomberman)
+//		game.addVisual(carpincho)
+//		game.onTick(400,"carpinchoMoving",{=> carpincho.caminar()})
+		game.addVisual(llama)
+		game.onTick(400,"llamaMoving",{=> llama.caminar()})
+		game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
+		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
 		self.configurarTeclas()
 		self.configurarColisiones()
 		rocas.rocasGenerator()
