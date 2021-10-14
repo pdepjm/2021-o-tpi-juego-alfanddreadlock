@@ -23,7 +23,10 @@ object config{
 		plantasA.plantasGenerator()
 		troncos.troncosGenerator()
 		panel.generator()
-		
+		// Saber qué clase instanciar
+		// Saber en qué posiciones instanciarlas.
+		// Sí van a necesitar tener varias listas de posiciones
+		// el forEach que escriban debería ser 1 solo.
 		
 	}
 	method configurarTeclas(){

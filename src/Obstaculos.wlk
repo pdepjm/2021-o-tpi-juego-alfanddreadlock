@@ -112,7 +112,7 @@ object obstaculosGenerales{
 
 
 
-class Bombas{
+class Bombas { // en singular
 	var property image = "bomba.png"
 	var property position = game.at(2,0)
 	var property exploto = false

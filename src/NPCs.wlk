@@ -15,6 +15,8 @@ object bomberman{
 	const bombasPuestas = []
 	var vidas = 3
 	method moverPara(direccion) {
+		// si me puedo mover, me muevo.
+		
 			posicionAnterior=position
 			posicionSiguiente = direccion.proximaPosicion(position)
 		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
@@ -49,7 +51,7 @@ object bomberman{
 				bombasDisponibles+=1
 		}}
 	}
-	method morir(){
+	method morir(){ //perder vida
 		vidas-=1
 		if(vidas<0){
 			self.perder()
@@ -84,6 +86,9 @@ object carpincho{
 	var property posicionSiguiente = game.at(0,0)
 
 	method caminar(){
+		// dirección <- objeto copado que sabe hacer cosas
+		// direccion.moverA(self)
+		
 		if (direccion=="izquierda"){
 			self.caminarAIzquierda()
 			}else{
@@ -95,6 +100,9 @@ object carpincho{
 			image = "carpinchoI.png"
 			posicionAnterior = position
 			posicionSiguiente = izquierda.proximaPosicion(position)
+			
+		// simplificar y delegar
+		// esto está mal, porque en vez que delegarle polimórficamente a los obstáculos saber si son atravesables o no, deciden uds acá.
 		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
 			direccion = "derecha"
 			self.caminarADerecha()
