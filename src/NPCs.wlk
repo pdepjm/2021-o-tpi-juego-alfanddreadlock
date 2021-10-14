@@ -48,7 +48,7 @@ object carpincho{
 object llama{
 	var property image = "LlamaIzq.png"
 	var property direccion = "izquierda"
-	var property position = game.at(9,2)
+	var property position = game.at(9,8)
 	var property posicionAnterior = game.at(0,0)
 	var property posicionSiguiente = game.at(0,0)
 
