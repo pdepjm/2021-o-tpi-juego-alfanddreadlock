@@ -32,36 +32,4 @@
 		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 		<nature>org.uqbar.project.wollok.wollokNature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>assets/BabaDer.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/BabaDer.png</location>
-		</link>
-		<link>
-			<name>assets/BabaIzq.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/BabaIzq.png</location>
-		</link>
-		<link>
-			<name>assets/LlamaAbajo.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/LlamaAbajo.png</location>
-		</link>
-		<link>
-			<name>assets/LlamaArriba.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/LlamaArriba.png</location>
-		</link>
-		<link>
-			<name>assets/LlamaDer.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/LlamaDer.png</location>
-		</link>
-		<link>
-			<name>assets/LlamaIzq.png</name>
-			<type>1</type>
-			<location>C:/Users/maxim/Downloads/LlamaIzq.png</location>
-		</link>
-	</linkedResources>
 </projectDescription>
