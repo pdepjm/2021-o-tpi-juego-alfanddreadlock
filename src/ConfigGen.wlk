@@ -9,8 +9,8 @@ object config{
 	method configuracionInicial(){
 		
 		game.addVisual(bomberman)
-//		game.addVisual(carpincho)
-//		game.onTick(400,"carpinchoMoving",{=> carpincho.caminar()})
+		game.addVisual(carpincho)
+		game.onTick(400,"carpinchoMoving",{=> carpincho.caminar()})
 		game.addVisual(llama)
 		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
