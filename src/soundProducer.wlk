@@ -13,6 +13,7 @@ object backgroundMusic{
 			sonido.volume(1)
 		}
 	method mandaleCumbia(){
+		
 		sonido.play()
 	}
 }
