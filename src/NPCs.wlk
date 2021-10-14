@@ -137,7 +137,7 @@ object llama{
 			image = "LlamaIzq.png"
 			posicionAnterior = position
 			posicionSiguiente = izquierda.proximaPosicion(position)
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
+		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
 			direccion = "derecha"
 			self.caminarADerecha()
 				}else{
@@ -151,7 +151,7 @@ object llama{
 			image = "LlamaDer.png"
 			posicionAnterior = position
 			posicionSiguiente = derecha.proximaPosicion(position)
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
+		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
 				direccion = "izquierda"
 				self.caminarAIzquierda()
 				}else{

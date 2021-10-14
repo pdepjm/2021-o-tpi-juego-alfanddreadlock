@@ -15,7 +15,7 @@ object panel{
 	method posicion()=position
 	method generator(){
 		posiciones.forEach({posicion=>paneles.add(new Panel(position=posicion))})
-		paneles.forEach{panel=>game.addVisual(panel)}
+		generador.sumarVisual(paneles)
 	}
 }
 class PlantaD{
@@ -29,7 +29,7 @@ object plantasD{
 	const plantas = []
 	method plantasGenerator(){
 		posiciones.forEach{posicion=>plantas.add(new PlantaD(position = posicion))}
-		plantas.forEach{planta=>game.addVisual(planta)}
+		generador.sumarVisual(plantas)
 	}
 }
 
@@ -44,7 +44,7 @@ object plantasI{
 	const plantas = []
 	method plantasGenerator(){
 		posiciones.forEach{posicion=>plantas.add(new PlantaI(position = posicion))}
-		plantas.forEach{planta=>game.addVisual(planta)}
+		generador.sumarVisual(plantas)
 	}
 }
 
@@ -59,7 +59,7 @@ object plantasA{
 	const plantas = []
 	method plantasGenerator(){
 		posiciones.forEach{posicion=>plantas.add(new PlantaA(position = posicion))}
-		plantas.forEach{planta=>game.addVisual(planta)}
+		generador.sumarVisual(plantas)
 	}
 }
 
@@ -107,7 +107,7 @@ object generador{
 	//}
 }
 object obstaculosGenerales{
-	const property posiciones = rocas.posiciones()+troncos.posiciones()
+	const property posiciones = rocas.posiciones()+troncos.posiciones()+plantasI.posiciones()+plantasD.posiciones()+plantasA.posiciones()
 }
 
 
