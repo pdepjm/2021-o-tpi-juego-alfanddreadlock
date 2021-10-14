@@ -1,7 +1,80 @@
 import wollok.game.*
 import direcciones.*
 import ConfigGen.*
+import Obstaculos.*
 
+
+object bomberman{
+	var property image = "bomberman.png"
+	var property position = game.at(0,0)
+	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
+	
+	var posicionAnterior = game.at(0,0)
+	var posicionSiguiente = game.at(0,0)
+	var bombasDisponibles = 1
+	const bombasPuestas = []
+	var vidas = 3
+	method moverPara(direccion) {
+			posicionAnterior=position
+			posicionSiguiente = direccion.proximaPosicion(position)
+		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
+			self.quedarseQuieto()
+		}
+		else if(posicionSiguiente.x()>13 or posicionSiguiente.x()<0 or posicionSiguiente.y()<0 or posicionSiguiente.y()>13){
+			self.quedarseQuieto()
+		}
+		else{
+			//direccion.movimiento(self)
+			position = posicionSiguiente 
+		}
+	}
+	method quedarseQuieto(){
+		position = posicionAnterior
+	}
+	method ponerBomba(){
+		self.recuperarBombas()
+		if(bombasDisponibles>0){
+			bombasPuestas.add(new Bombas(position = position))
+			bombasDisponibles -=1
+			game.addVisual(bombasPuestas.last())
+			bombasPuestas.last().explotar()
+		}
+		else{
+			game.error("Bombas Insuficientes")
+		}
+	}
+	method recuperarBombas(){
+		bombasPuestas.forEach{bomba=>if(bomba.exploto()){
+				bombasPuestas.remove(bomba)
+				bombasDisponibles+=1
+		}}
+	}
+	method morir(){
+		vidas-=1
+		if(vidas<0){
+			self.perder()
+		}
+	}
+	method perder(){
+		game.removeVisual(self)
+	}
+	method modificarImagen(imagen){
+		image = imagen
+	}
+}
+
+class Explosion{
+	var property image = "expCh1.png"
+	var property position = game.at(3,0)
+	method mostrar(posicion){
+		position = posicion
+		game.addVisual(self)
+		game.onTick(750,"explotando",{image="expCh2.png"})
+		game.onTick(1000,"explotando",{image="expCh3.png"})
+		game.onTick(1500,"termino",{game.removeVisual(self)})
+	}
+	
+}
 
 object carpincho{
 	var property image = "carpincho1.png"
