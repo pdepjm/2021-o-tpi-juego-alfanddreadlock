@@ -8,33 +8,20 @@ object bomberman{
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
 	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
-	
-	var posicionAnterior = game.at(0,0)
 	var posicionSiguiente = game.at(0,0)
 	var bombasDisponibles = 1
 	const bombasPuestas = []
 	var vidas = 3
 	method moverPara(direccion) {
-			posicionAnterior=position
 			posicionSiguiente = direccion.proximaPosicion(position)
-		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
-			self.quedarseQuieto()
+		if(direccion.esPosible(position)){
+			position = direccion.siguientePosicion()
 		}
-		else if(posicionSiguiente.x()>13 or posicionSiguiente.x()<0 or posicionSiguiente.y()<0 or posicionSiguiente.y()>13){
-			self.quedarseQuieto()
-		}
-		else{
-			//direccion.movimiento(self)
-			position = posicionSiguiente 
-		}
-	}
-	method quedarseQuieto(){
-		position = posicionAnterior
 	}
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
-			bombasPuestas.add(new Bombas(position = position))
+			bombasPuestas.add(new Bomba(position = position))
 			bombasDisponibles -=1
 			game.addVisual(bombasPuestas.last())
 			bombasPuestas.last().explotar()
@@ -49,7 +36,7 @@ object bomberman{
 				bombasDisponibles+=1
 		}}
 	}
-	method morir(){
+	method perderVida(){ 
 		vidas-=1
 		if(vidas<0){
 			self.perder()
@@ -69,9 +56,9 @@ class Explosion{
 	method mostrar(posicion){
 		position = posicion
 		game.addVisual(self)
-		game.onTick(750,"explotando",{image="expCh2.png"})
-		game.onTick(1000,"explotando",{image="expCh3.png"})
-		game.onTick(1500,"termino",{game.removeVisual(self)})
+		game.schedule(750,{image="expCh2.png"})
+		game.schedule(1000,{image="expCh3.png"})
+		game.schedule(1500,{game.removeVisual(self)})
 	}
 	
 }
@@ -84,6 +71,9 @@ object carpincho{
 	var property posicionSiguiente = game.at(0,0)
 
 	method caminar(){
+		// dirección <- objeto copado que sabe hacer cosas
+		// direccion.moverA(self)
+		
 		if (direccion=="izquierda"){
 			self.caminarAIzquierda()
 			}else{
@@ -95,6 +85,9 @@ object carpincho{
 			image = "carpinchoI.png"
 			posicionAnterior = position
 			posicionSiguiente = izquierda.proximaPosicion(position)
+			
+		// simplificar y delegar
+		// esto está mal, porque en vez que delegarle polimórficamente a los obstáculos saber si son atravesables o no, deciden uds acá.
 		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
 			direccion = "derecha"
 			self.caminarADerecha()

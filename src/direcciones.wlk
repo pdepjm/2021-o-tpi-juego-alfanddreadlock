@@ -1,21 +1,38 @@
 import wollok.game.*
 import ConfigGen.*
+import Obstaculos.*
 
 object izquierda {
-	method proximaPosicion(posicionActual) = posicionActual.left(1) 
-	method nombre() = "izquierda"
+	var property siguientePosicion = null
+	method proximaPosicion(posicionActual) = posicionActual.left(1)
+	method esPosible(posicion){
+		siguientePosicion = self.proximaPosicion(posicion)
+		return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
+	}
 }
 
 object derecha {
-	method proximaPosicion(posicionActual) = posicionActual.right(1) 
-	method nombre() = "derecha"
+	var property siguientePosicion = null
+	method proximaPosicion(posicionActual) = posicionActual.right(1)
+	method esPosible(posicion){
+		siguientePosicion = self.proximaPosicion(posicion)
+		return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
+	}
 }
 
 object arriba{
+	var property siguientePosicion = null
 	method proximaPosicion(posicionActual) = posicionActual.up(1)
-	method nombre() = "arriba"
+	method esPosible(posicion){
+		siguientePosicion = self.proximaPosicion(posicion)
+		return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
+	}
 }
 object abajo{
+	var property siguientePosicion = null
 	method proximaPosicion(posicionActual) = posicionActual.down(1)
-	method nombre() = "abajo"
+	method esPosible(posicion){
+		siguientePosicion = self.proximaPosicion(posicion)
+		return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
+	}
 }

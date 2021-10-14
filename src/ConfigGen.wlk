@@ -15,15 +15,13 @@ object config{
 		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
 		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
+		obstaculosGenerales.obstaculos().forEach{obstaculo=>obstaculo.crear()}
 		self.configurarTeclas()
 		self.configurarColisiones()
-		rocas.rocasGenerator()
-		plantasD.plantasGenerator()
-		plantasI.plantasGenerator()
-		plantasA.plantasGenerator()
-		troncos.troncosGenerator()
-		panel.generator()
-		
+		// Saber qué clase instanciar
+		// Saber en qué posiciones instanciarlas.
+		// Sí van a necesitar tener varias listas de posiciones
+		// el forEach que escriban debería ser 1 solo.
 		
 	}
 	method configurarTeclas(){
