@@ -8,8 +8,8 @@ program juego {
 	game.title("Bomberman del Subdesarrollo")
 	game.cellSize(60)
 	
-	game.height(14)
-	game.width(14)
+	game.height(15)
+	game.width(15)
 	game.boardGround("fondo2.png")
 	config.configuracionInicial()
 	game.start()
