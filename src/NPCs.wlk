@@ -3,21 +3,14 @@ import direcciones.*
 import ConfigGen.*
 import Obstaculos.*
 
-
+/*
 object bomberman{
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
 	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
-	var posicionSiguiente = game.at(0,0)
 	var bombasDisponibles = 1
 	const bombasPuestas = []
 	var vidas = 3
-	method moverPara(direccion) {
-			posicionSiguiente = direccion.proximaPosicion(position)
-		if(direccion.esPosible(position)){
-			position = direccion.siguientePosicion()
-		}
-	}
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
@@ -63,54 +56,6 @@ class Explosion{
 	
 }
 
-object carpincho{
-	var property image = "carpincho1.png"
-	var property direccion = "izquierda"
-	var property position = game.at(9,2)
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
-
-	method caminar(){
-		// dirección <- objeto copado que sabe hacer cosas
-		// direccion.moverA(self)
-		
-		if (direccion=="izquierda"){
-			self.caminarAIzquierda()
-			}else{
-		self.caminarADerecha()
-		}
-	}
-	method caminarAIzquierda(){
-		if (direccion == "izquierda"){
-			image = "carpinchoI.png"
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-			
-		// simplificar y delegar
-		// esto está mal, porque en vez que delegarle polimórficamente a los obstáculos saber si son atravesables o no, deciden uds acá.
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
-			direccion = "derecha"
-			self.caminarADerecha()
-				}else{
-				position = posicionSiguiente 
-			}
-		}
-	}
-	
-	method caminarADerecha(){
-		if (direccion == "derecha"){
-			image = "carpinchoD.png"
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
-				direccion = "izquierda"
-				self.caminarAIzquierda()
-				}else{
-				position = posicionSiguiente
-			}
-		}
-	}
-}
 object llama{
 	var property image = "LlamaIzq.png"
 	var property direccion = "izquierda"
@@ -185,3 +130,4 @@ class Baba{
 		}
 	}
 }
+*/

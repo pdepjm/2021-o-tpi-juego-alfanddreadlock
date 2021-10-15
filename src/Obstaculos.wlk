@@ -1,10 +1,56 @@
 import wollok.game.*
 import NPCs.*
 
-class Panel{
-	const property image = "panel.png"
-	var property position = game.at(0,5)
+const plantaI = new EspecieDeObstaculo (image = "plantaI.png", posiciones = [game.at(0,0),game.at(0,1),game.at(0,2),game.at(0,3),game.at(0,4),game.at(0,5),game.at(0,6),game.at(0,7),game.at(0,8),game.at(0,9),game.at(0,10),game.at(0,11),game.at(0,12)])
+const plantaD = new EspecieDeObstaculo (image = "plantaD.png",posiciones = [game.at(14,0),game.at(14,1),game.at(14,2),game.at(14,3),game.at(14,4),game.at(14,5),game.at(14,6),game.at(14,7),game.at(14,8),game.at(14,9),game.at(14,10),game.at(14,11),game.at(14,12)])
+const plantaA = new EspecieDeObstaculo (image = "plantaI.png",posiciones = [game.at(0,12),game.at(1,12),game.at(2,12),game.at(3,12),game.at(4,12),game.at(5,12),game.at(6,12),game.at(7,12),game.at(8,12),game.at(9,12),game.at(10,12),game.at(12,12),game.at(13,12),game.at(14,12)])
+const roca = new EspecieDeObstaculo (image = "roca2.png",posiciones = [game.at(1,7),game.at(2,1),game.at(2,3),game.at(2,5),game.at(2,7),game.at(2,9),game.at(2,10),game.at(4,1),game.at(4,3),game.at(4,5),game.at(4,7),game.at(4,9),game.at(4,10),game.at(5,7),game.at(6,0),game.at(6,1),game.at(6,2),game.at(6,3),game.at(6,5),game.at(6,6),game.at(6,7),game.at(6,9),game.at(6,10),game.at(7,7),game.at(8,1),game.at(8,3),game.at(8,5),game.at(8,7),game.at(8,9),game.at(8,10),game.at(10,1),game.at(10,3),game.at(10,5),game.at(10,7),game.at(10,9),game.at(10,10),game.at(11,7),game.at(12,1),game.at(12,3),game.at(12,5),game.at(12,7),game.at(12,8),game.at(12,10)])
+
+class EspecieDeObstaculo{		//Una clase con una lista de posiciones y una imágen.
+	var property posiciones = []
+	var property image = null
+	method posiciones() = posiciones
+	method image() = null
+}
+
+class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una única posición y una imágen.
+	const property image = null
+	var property position = null
+	method image() = image
+	method posicion() = position
+}
+
+//Un objeto que lee una lista de posiciones, y esa posición la mete adentro de un obstaculo, y ese obstaculo lo mete adentro de una lista variable	
+object ubicarObstaculos{	
+	var property ubicacionDeObstaculos=[]
+	var property position = null
+	method obstaculos()=ubicacionDeObstaculos
+	method crear(especieDeObstaculo){
+	(especieDeObstaculo.posiciones()).forEach{posicion=>ubicacionDeObstaculos.add( new UnObstaculo (image = especieDeObstaculo.image(), position=posicion))}
+	generador.sumarVisual(ubicacionDeObstaculos)
+	}
+}
+
+object generador{
+	method sumarVisual(ubicacionDeObstaculos){
+		ubicacionDeObstaculos.forEach{obstaculo=>game.addVisual(obstaculo)}
+	}
+}
+
+/*
+class PlantaD{
+	const property image = "plantaD.png"
+	var property position = game.at(14,0)
 	method posicion()=position
+}
+
+object plantasD{
+	const property posiciones = [game.at(14,0),game.at(14,1),game.at(14,2),game.at(14,3),game.at(14,4),game.at(14,5),game.at(14,6),game.at(14,7),game.at(14,8),game.at(14,9),game.at(14,10),game.at(14,11),game.at(14,12)]
+	const plantas = []
+	method crear(){
+		posiciones.forEach{posicion=>plantas.add(new PlantaD(position = posicion))}
+		generador.sumarVisual(plantas)
+	}
 }
 
 object panel{
@@ -16,20 +62,6 @@ object panel{
 	method crear(){
 		posiciones.forEach({posicion=>paneles.add(new Panel(position=posicion))})
 		generador.sumarVisual(paneles)
-	}
-}
-class PlantaD{
-	const property image = "plantaD.png"
-	var property position = game.at(14,0)
-	method posicion()=position
-}
-	
-object plantasD{
-	const property posiciones = [game.at(14,0),game.at(14,1),game.at(14,2),game.at(14,3),game.at(14,4),game.at(14,5),game.at(14,6),game.at(14,7),game.at(14,8),game.at(14,9),game.at(14,10),game.at(14,11),game.at(14,12)]
-	const plantas = []
-	method crear(){
-		posiciones.forEach{posicion=>plantas.add(new PlantaD(position = posicion))}
-		generador.sumarVisual(plantas)
 	}
 }
 
@@ -78,7 +110,6 @@ object rocas{
 	}
 }
 
-
 class Rompible{
 	const property image = "Tronco.png"
 	var property position = game.at(3,0)
@@ -106,14 +137,15 @@ object generador{
 		//}
 	//}
 }
-
+*/
 object obstaculosGenerales{
-	const property posiciones = rocas.posiciones()+troncos.posiciones()+plantasI.posiciones()+plantasD.posiciones()+plantasA.posiciones()
-	const property obstaculos = [troncos,rocas,plantasI,plantasD,plantasA,panel]
+	const property obstaculos = [plantaI,plantaD,plantaA,roca]
+	const property posiciones = plantaI.posiciones()+plantaD.posiciones()+plantaA.posiciones()+roca.posiciones()
+	method posiciones()=posiciones
 }
 
 
-
+/*
 class Bomba { 
 	var property image = "bomba.png"
 	var property position = game.at(2,0)
@@ -130,3 +162,4 @@ class Bomba {
 		exploto = true
 	}
 }
+*/
