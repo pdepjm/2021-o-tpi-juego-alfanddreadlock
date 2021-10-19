@@ -7,14 +7,15 @@ const babaEnJuego = []
 
 object config{
 	method configuracionInicial(){
-		
-		ubicarObstaculos.crear(plantaI)
-		ubicarObstaculos.crear(plantaD)
-		ubicarObstaculos.crear(plantaA)
-		ubicarObstaculos.crear(roca)
-		game.addVisual(bomberman)
+		plantasI.crear(plantaI)
+		plantasD.crear(plantaD)
+		plantasA.crear(plantaA)
+		rocas.crear(roca)
+		troncos.crear(tronco)
 		game.addVisual(carpincho)
-		game.addVisual(llama)
+//		game.addVisual(bomberman)
+
+//		game.addVisual(llama)
 		game.onTick(250,"carpinchoMoving",{=> direccionCarpincho.moverAutomatico(carpincho)})
 //		game.onTick(300,"llamaMoving",{=>direccionLlama.moverAutomatico(llama)})
 //		game.onTick(400,"llamaMoving",{=> llama.caminar()})
@@ -22,14 +23,15 @@ object config{
 //		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba = unaBaba.avanzar()}})
 //		obstaculosGenerales.obstaculos().forEach{obstaculo=obstaculo.crear()}
 
-		self.configurarTeclas()
-		self.configurarColisiones()
+//		self.configurarTeclas()
+//		self.configurarColisiones()
 //		 Saber qué clase instanciar
 //		 Saber en qué posiciones instanciarlas.
 //		 Sí van a necesitar tener varias listas de posiciones
 //		 el forEach que escriban debería ser 1 solo.
-		
 	}
+}
+/*	
 	method configurarTeclas(){
 		keyboard.left().onPressDo({ bomberman.moverPara(derecha) })
 		keyboard.right().onPressDo({ bomberman.moverPara(derecha) })
@@ -41,7 +43,7 @@ object config{
 	method configurarColisiones(){
 	}
 }
-/*
+
 object gif{
 	var indice = 0
 	method hacerGif(objeto,imagenes){

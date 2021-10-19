@@ -16,25 +16,33 @@ object arriba {
 	}
 	
 class Direccion{
+	const property direcciones = [izquierda,arriba,abajo,derecha]
 	var property siguientePosicion=null
 	var property direccionActual=null
+	method direccionActual()=direccionActual
 	method proximaDireccion(direccion){direccionActual=direccion}
 	method proximaPosicion(personaje){
 		siguientePosicion=direccionActual.ubicar(personaje)
 		return siguientePosicion
 	}
+	method direccionAlAzar()=direcciones.anyOne()
+	method cambiarDireccion(){
+		if (direccionActual==direcciones.head())
+		direccionActual=derecha
+		else direccionActual=izquierda
+		return direccionActual
+	}
+	
 	method esPosible(personaje){
 		siguientePosicion = self.proximaPosicion(personaje)
 	return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
 	}
-	
 	method moverAutomatico(personaje){
 		if (self.esPosible(personaje)){
 		personaje.posicionar(self.proximaPosicion(personaje))
 		}else{
-			self.proximaDireccion(derecha)
-			personaje.imageActual(personaje.imageD())
-			personaje.posicionar(self.proximaPosicion(personaje))
+		self.cambiarDireccion()
+		personaje.posicionar(self.proximaPosicion(personaje))
 		}
 	}
 }
@@ -42,7 +50,7 @@ class Direccion{
 class Monstruo{
 	var property imageI = null
 	var property imageD = null
-	var property image = imageI
+	var property image = null
 	var property position = null
 	method imageI()=imageI
 	method imageD()=imageD

@@ -3,14 +3,15 @@ import direcciones.*
 import ConfigGen.*
 import Obstaculos.*
 
-/*
+
 object bomberman{
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
 	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
-	var bombasDisponibles = 1
-	const bombasPuestas = []
+//	var bombasDisponibles = 1
+//	const bombasPuestas = []
 	var vidas = 3
+/*/
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
@@ -29,6 +30,7 @@ object bomberman{
 				bombasDisponibles+=1
 		}}
 	}
+*/
 	method perderVida(){ 
 		vidas-=1
 		if(vidas<0){
@@ -55,7 +57,7 @@ class Explosion{
 	}
 	
 }
-
+/*
 object llama{
 	var property image = "LlamaIzq.png"
 	var property direccion = "izquierda"
