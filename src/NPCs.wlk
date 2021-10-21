@@ -8,16 +8,14 @@ object bomberman{
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
 	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
-	var posicionSiguiente = game.at(0,0)
 	var bombasDisponibles = 1
 	const bombasPuestas = []
 	var vidas = 3
+	
 	method moverPara(direccion) {
-			posicionSiguiente = direccion.proximaPosicion(position)
-		if(direccion.esPosible(position)){
-			position = direccion.siguientePosicion()
-		}
+		direccion.movemePara(self,position) //las direcciones son quienes se encargan de mover al personaje
 	}
+	
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
@@ -27,7 +25,7 @@ object bomberman{
 			bombasPuestas.last().explotar()
 		}
 		else{
-			game.error("Bombas Insuficientes")
+			game.say(self, "Bombas Insuficientes")
 		}
 	}
 	method recuperarBombas(){
@@ -36,6 +34,7 @@ object bomberman{
 				bombasDisponibles+=1
 		}}
 	}
+
 	method perderVida(){ 
 		vidas-=1
 		if(vidas<0){
@@ -52,66 +51,76 @@ object bomberman{
 
 class Explosion{
 	var property image = "expCh1.png"
-	var property position = game.at(3,0)
+	var property position = null
 	method mostrar(posicion){
 		position = posicion
 		game.addVisual(self)
 		game.schedule(750,{image="expCh2.png"})
-		game.schedule(1000,{image="expCh3.png"})
+		game.schedule(1000,{self.expansionFinal()})
 		game.schedule(1500,{game.removeVisual(self)})
 	}
+	method expansionFinal(){
+		image="expCh3.png"
+		//self.expandirseHorizontal() //Como podriamos hacer para que la explosion efectivamente ocupe todas las posiciones que tiene 
+		//que ocupar? Porque despues vamos a necesitar un onCollide
+	}
 	
 }
 
-object carpincho{
-	var property image = "carpincho1.png"
-	var property direccion = "izquierda"
-	var property position = game.at(9,2)
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
-
-	method caminar(){
-		// dirección <- objeto copado que sabe hacer cosas
-		// direccion.moverA(self)
-		
-		if (direccion=="izquierda"){
-			self.caminarAIzquierda()
-			}else{
-		self.caminarADerecha()
+class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el bomberman, todavia esta clase no se usa
+	var property image = null
+	var property position = null
+	var vidas = 3
+	method perder(){ 
+		vidas-=1
+		if(vidas<0){
+			self.morir()
 		}
 	}
-	method caminarAIzquierda(){
-		if (direccion == "izquierda"){
-			image = "carpinchoI.png"
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-			
-		// simplificar y delegar
-		// esto está mal, porque en vez que delegarle polimórficamente a los obstáculos saber si son atravesables o no, deciden uds acá.
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
-			direccion = "derecha"
-			self.caminarADerecha()
-				}else{
-				position = posicionSiguiente 
-			}
-		}
+	method morir(){
+		game.removeVisual(self)
 	}
-	
-	method caminarADerecha(){
-		if (direccion == "derecha"){
-			image = "carpinchoD.png"
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-		if(rocas.posiciones().contains(posicionSiguiente)||plantasD.posiciones().contains(posicionSiguiente)||plantasI.posiciones().contains(posicionSiguiente)||plantasA.posiciones().contains(posicionSiguiente)){
-				direccion = "izquierda"
-				self.caminarAIzquierda()
-				}else{
-				position = posicionSiguiente
-			}
-		}
+	method modificarImagen(imagen){
+		image = imagen
 	}
 }
-object llama{
+/* 
+class Monstruo{
+	var property imageI = null
+	var property imageD = null
+	var property image = null
+	var property position = null
+	method imageI()=imageI
+	method imageD()=imageD
+	method posicion()=position
+	method imageActual(imageActual){image=imageActual}
+	method posicionar(posicion){position=posicion}
+}
+
+class MonstruoADistancia inherits Monstruo{
+	method escupir(){
+		const baba = new Baba()
+		game.addVisual(baba)
+		babaEnJuego.add(baba)
+	}
+}
+
+class Baba{
+	var property imageI = null
+	var property imageD = null
+	var property image = imageI
+	var property position = null
+	method posicion()=position
+	method imageActual(imageActual){image=imageActual}
+	method posicionar(posicion){position=posicion}
+	
+}
+const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png", position = game.at(12,2))
+const direccionCarpincho = new Direccion (direccionActual=izquierda)
+const llama = new MonstruoADistancia (imageI="llamaIzq.png",imageD="LlamaDer.png",position = game.at(9,8))
+const direccionLlama = new Direccion (direccionActual=izquierda)
+*/
+/* object llama{
 	var property image = "LlamaIzq.png"
 	var property direccion = "izquierda"
 	var property position = game.at(9,8)
@@ -184,4 +193,4 @@ class Baba{
 			position = posicionSiguiente
 		}
 	}
-}
+}*/

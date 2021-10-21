@@ -7,7 +7,6 @@ program juego {
 	
 	game.title("Bomberman del Subdesarrollo")
 	game.cellSize(60)
-	
 	game.height(14)
 	game.width(14)
 	game.boardGround("fondo.png")
