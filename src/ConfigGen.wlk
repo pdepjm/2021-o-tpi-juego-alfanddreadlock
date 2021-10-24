@@ -7,6 +7,7 @@ const babaEnJuego = []
 
 object config{
 	method configuracionInicial(){
+		const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
 		//game.addVisual(carpincho)
 		game.addVisual(bomberman)
 
@@ -16,7 +17,7 @@ object config{
 //		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
 //		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
-		obstaculosGenerales.obstaculos().forEach{obstaculo=>obstaculo.crear()}
+		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}
 
 		self.configurarTeclas()
 		self.configurarColisiones()

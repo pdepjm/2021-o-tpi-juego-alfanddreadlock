@@ -5,11 +5,12 @@ import Obstaculos.*
 
 
 object bomberman{
+	// esto seria para intentar lograr movimiento cuando el bomberman se mueve: const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
-	const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
 	var bombasDisponibles = 1
 	const bombasPuestas = []
+	var alcance = 1
 	var vidas = 3
 	
 	method moverPara(direccion) {
@@ -22,7 +23,7 @@ object bomberman{
 			bombasPuestas.add(new Bomba(position = position))
 			bombasDisponibles -=1
 			game.addVisual(bombasPuestas.last())
-			bombasPuestas.last().explotar()
+			bombasPuestas.last().explotar(alcance)
 		}
 		else{
 			game.say(self, "Bombas Insuficientes")
@@ -35,13 +36,13 @@ object bomberman{
 		}}
 	}
 
-	method perderVida(){ 
+	method perder(){ 
 		vidas-=1
 		if(vidas<0){
-			self.perder()
+			self.morir()
 		}
 	}
-	method perder(){
+	method morir(){
 		game.removeVisual(self)
 	}
 	method modificarImagen(imagen){
@@ -52,18 +53,40 @@ object bomberman{
 class Explosion{
 	var property image = "expCh1.png"
 	var property position = null
-	method mostrar(posicion){
-		position = posicion
+	var espaciosOcupados = []
+	var fuegoPuedeIrPara = []
+	method mostrar(rango){
 		game.addVisual(self)
 		game.schedule(750,{image="expCh2.png"})
-		game.schedule(1000,{self.expansionFinal()})
-		game.schedule(1500,{game.removeVisual(self)})
+		if(rango==1){
+			game.schedule(1000,{self.expansionChFinal()})
+		}
+		else{
+			game.schedule(1000,{/*self.expansionGrFinal() */})
+		}
+		game.schedule(1500,{self.finDeExplosion()})
 	}
-	method expansionFinal(){
-		image="expCh3.png"
+	method expansionChFinal(){
+			image="expCh3.png"
+			fuegoPuedeIrPara = direcciones.direccionesAldeanas(position)
+			fuegoPuedeIrPara.forEach{posicion=>espaciosOcupados.add(new ObjetoInvisible(position=posicion))}
+			espaciosOcupados.forEach{objetoInvisible => game.addVisual(objetoInvisible)}
+			espaciosOcupados.forEach{objetoInvisible => game.onCollideDo(objetoInvisible,{elemento=>elemento.perder()})}
+			
+	}
+	
+	method finDeExplosion(){
+		espaciosOcupados.forEach{objetoInvisible => game.removeVisual(objetoInvisible)}
+		game.removeVisual(self)
+	}
+		
 		//self.expandirseHorizontal() //Como podriamos hacer para que la explosion efectivamente ocupe todas las posiciones que tiene 
 		//que ocupar? Porque despues vamos a necesitar un onCollide
-	}
+}
+	
+
+class ObjetoInvisible{
+	const property position = null
 	
 }
 

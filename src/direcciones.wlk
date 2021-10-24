@@ -19,25 +19,29 @@ const izquierda= new Izq()
 const derecha = new Der()
 const arriba = new Arriba()
 const abajo = new Abajo()
+
+object direcciones{
+	const direccionesPosibles = [izquierda,derecha,arriba,abajo]
+	method direccionesAldeanas(posicion) = direccionesPosibles.map{direccion=>direccion.proximaPosicion(posicion)}
+}
+
 class Direccion{
 	//const property direcciones = [izquierda,arriba,abajo,derecha]
 	var property siguientePosicion=null
 	var property direccionActual=null
 	
 	method movemePara(personaje,posicion){
-		self.proximaPosicion(posicion)
+		siguientePosicion = self.proximaPosicion(posicion)
 		if(self.esPosible(posicion)){
 			personaje.position(siguientePosicion)
 		}
 	}
 	
 	method esPosible(posicion){
-		return obstaculosGenerales.posiciones().contains(siguientePosicion).negate()
+		return obstaculosGenerales.posiciones().contains(self.proximaPosicion(posicion)).negate()
 	}
 	
-	method proximaPosicion(posicion){
-		siguientePosicion=null
-	}
+	method proximaPosicion(posicion)
 	//method proximaDireccion(direccion){direccionActual=direccion}
 	/*
 	method direccionAlAzar()=direcciones.anyOne()
@@ -64,22 +68,22 @@ class Direccion{
 
 class Izq inherits Direccion{ 
 	override method proximaPosicion(posicion){
-		siguientePosicion=posicion.left(1) 
+		return posicion.left(1) 
 	}
 }
 class Der inherits Direccion{
 	override method proximaPosicion(posicion){
-		siguientePosicion=posicion.right(1)
+		return posicion.right(1)
 	}
 }
 class Arriba inherits Direccion{
 	override method proximaPosicion(posicion){
-		siguientePosicion=posicion.up(1)
+		return posicion.up(1)
 	}
 }
 class Abajo inherits Direccion{
 	override method proximaPosicion(posicion){
-		siguientePosicion=posicion.down(1)
+		return posicion.down(1)
 	}
 }
 

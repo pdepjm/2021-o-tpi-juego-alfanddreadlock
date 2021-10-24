@@ -2,7 +2,7 @@ import wollok.game.*
 import NPCs.*
 import direcciones.*
 
-const troncos = new EspecieDeObstaculo (imagen = "tronco.png", esRompible=true, posiciones = [game.at(1,8),game.at(3,2),game.at(3,4),game.at(3,6),game.at(3,8),game.at(5,0),game.at(5,2),game.at(5,4),game.at(5,6),game.at(5,8),game.at(5,11),game.at(7,0),game.at(7,2),game.at(7,4),game.at(7,6),game.at(7,8),game.at(7,11),game.at(9,2),game.at(9,4),game.at(9,6),game.at(9,8),game.at(9,11),game.at(11,0),game.at(11,2),game.at(11,4),game.at(11,6),game.at(11,8),game.at(11,11)])
+const troncos = new EspecieDeObstaculo (imagen = "tronco.png", sonRompibles=true, posiciones = [game.at(1,8),game.at(3,2),game.at(3,4),game.at(3,6),game.at(3,8),game.at(5,0),game.at(5,2),game.at(5,4),game.at(5,6),game.at(5,8),game.at(5,11),game.at(7,0),game.at(7,2),game.at(7,4),game.at(7,6),game.at(7,8),game.at(7,11),game.at(9,2),game.at(9,4),game.at(9,6),game.at(9,8),game.at(9,11),game.at(11,0),game.at(11,2),game.at(11,4),game.at(11,6),game.at(11,8),game.at(11,11)])
 const plantasI = new EspecieDeObstaculo (imagen = "plantaI.png",posiciones = [game.at(0,0),game.at(0,1),game.at(0,2),game.at(0,3),game.at(0,4),game.at(0,5),game.at(0,6),game.at(0,7),game.at(0,8),game.at(0,9),game.at(0,10),game.at(0,11),game.at(0,12),game.at(2,12),game.at(2,13)])
 const plantasD = new EspecieDeObstaculo (imagen = "plantaD.png",posiciones = [game.at(13,0),game.at(13,1),game.at(13,2),game.at(13,3),game.at(13,4),game.at(13,5),game.at(13,6),game.at(13,7),game.at(13,8),game.at(13,9),game.at(13,10),game.at(13,11),game.at(13,12),game.at(13,13)])
 const plantasA = new EspecieDeObstaculo (imagen = "plantaArriba.png",posiciones = [game.at(0,12),game.at(1,12),game.at(2,13),game.at(2,12),game.at(3,13),game.at(4,13),game.at(5,13),game.at(6,13),game.at(7,13),game.at(8,13),game.at(9,13),game.at(10,13),game.at(11,13),game.at(12,13),game.at(13,13),game.at(13,13)])
@@ -15,6 +15,7 @@ class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una 
 	method perder(){
 		if(self.esRompible()){
 			// proximamente para poner los agarrables
+			obstaculosGenerales.obstaculos().remove(self)
 			game.removeVisual(self)
 		}
 	}
@@ -23,23 +24,24 @@ class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una 
 class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
 	var property posiciones = []
 	const imagen = null
-	const property esRompible = false
+	const property sonRompibles = false
+	const obstaculosCreados = []
 	
 	method crear(){ //Borre la parte de la lista obstaculos y el generador, directamente se añade la imagen aca
-		posiciones.forEach{posicion=>game.addVisual(new UnObstaculo (image = imagen, position=posicion))}
+		posiciones.forEach{posicion=>obstaculosCreados.add(new UnObstaculo (image = imagen, position=posicion,esRompible = sonRompibles))}
+		obstaculosCreados.forEach{obstaculo => self.sumar(obstaculo)}
 	}
+	
+	method sumar(obstaculo){
+		game.addVisual(obstaculo)
+		obstaculosGenerales.obstaculos().add(obstaculo)
+	}
+	
 }
 
-/*object generador{
-	method sumarVisual(especieDeObstaculo){
-		especieDeObstaculo.forEach{obstaculo=>game.addVisual(obstaculo)}
-	}
-}*/
-
-
 object obstaculosGenerales{
-	const property obstaculos = [plantasI,plantasD,plantasA,rocas,troncos]
-	const property posiciones = plantasI.posiciones()+plantasD.posiciones()+plantasA.posiciones()+rocas.posiciones()+troncos.posiciones()
+	const property obstaculos = []
+	method posiciones() = self.obstaculos().map{obstaculo=>obstaculo.position()}
 	//Se puede hacer con un map a obstaculos creo ^
 }
 
@@ -71,15 +73,15 @@ class Bomba {
 	var property image = "bomba.png"
 	var property position = game.at(2,0)
 	var property exploto = false
-	const explosion = new Explosion()
-	method explotar(){
+	const explosion = new Explosion(position = position)
+	method explotar(rango){
 		obstaculosGenerales.posiciones().add(position)
-		game.schedule(2000,{self.explotando()})
+		game.schedule(2000,{self.explotando(rango)})
 	}
-	method explotando(){
+	method explotando(rango){
 		obstaculosGenerales.posiciones().remove(position)
 		game.removeVisual(self)
-		explosion.mostrar(position)
+		explosion.mostrar(rango)
 		exploto = true
 	}
 }
