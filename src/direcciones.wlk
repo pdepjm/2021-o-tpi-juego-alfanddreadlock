@@ -19,29 +19,29 @@ const izquierda= new Izq()
 const derecha = new Der()
 const arriba = new Arriba()
 const abajo = new Abajo()
-
-object direcciones{
+const direccionesPermitidas = [izquierda,derecha,arriba,abajo]
+/*object direcciones{
 	const direccionesPosibles = [izquierda,derecha,arriba,abajo]
 	method direccionesAldeanas(posicion) = direccionesPosibles.map{direccion=>direccion.proximaPosicion(posicion)}
-}
+}*/
 
 class Direccion{
 	//const property direcciones = [izquierda,arriba,abajo,derecha]
 	var property siguientePosicion=null
 	var property direccionActual=null
 	
-	method movemePara(personaje,posicion){
-		siguientePosicion = self.proximaPosicion(posicion)
-		if(self.esPosible(posicion)){
+	method movemePara(personaje,posicion,cantidad){
+		siguientePosicion = self.proximaPosicion(posicion,cantidad)
+		if(self.esPosible(posicion,cantidad)){
 			personaje.position(siguientePosicion)
 		}
 	}
 	
-	method esPosible(posicion){
-		return obstaculosGenerales.posiciones().contains(self.proximaPosicion(posicion)).negate()
+	method esPosible(posicion,cantidad){
+		return obstaculosGenerales.posiciones().contains(self.proximaPosicion(posicion,cantidad)).negate()
 	}
-	
-	method proximaPosicion(posicion)
+	method puedeSeguir(position,cantidad) = (0..cantidad-1).all{i=>self.esPosible(position,i)}
+	method proximaPosicion(posicion,cantidad)
 	//method proximaDireccion(direccion){direccionActual=direccion}
 	/*
 	method direccionAlAzar()=direcciones.anyOne()
@@ -67,23 +67,23 @@ class Direccion{
 // en Direccion, podriamos tener solo const izquierda = new Direccion(dir = left) (O algo por el estilo)
 
 class Izq inherits Direccion{ 
-	override method proximaPosicion(posicion){
-		return posicion.left(1) 
+	override method proximaPosicion(posicion,cantidad){
+		return posicion.left(cantidad) 
 	}
 }
 class Der inherits Direccion{
-	override method proximaPosicion(posicion){
-		return posicion.right(1)
+	override method proximaPosicion(posicion,cantidad){
+		return posicion.right(cantidad)
 	}
 }
 class Arriba inherits Direccion{
-	override method proximaPosicion(posicion){
-		return posicion.up(1)
+	override method proximaPosicion(posicion,cantidad){
+		return posicion.up(cantidad)
 	}
 }
 class Abajo inherits Direccion{
-	override method proximaPosicion(posicion){
-		return posicion.down(1)
+	override method proximaPosicion(posicion,cantidad){
+		return posicion.down(cantidad)
 	}
 }
 

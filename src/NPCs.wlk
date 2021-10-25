@@ -14,7 +14,7 @@ object bomberman{
 	var vidas = 3
 	
 	method moverPara(direccion) {
-		direccion.movemePara(self,position) //las direcciones son quienes se encargan de mover al personaje
+		direccion.movemePara(self,position,1) //las direcciones son quienes se encargan de mover al personaje
 	}
 	
 	method ponerBomba(){
@@ -50,45 +50,70 @@ object bomberman{
 	}
 }
 
+
+
+
+
+
+
 class Explosion{
-	var property image = "expCh1.png"
+	var property image = "explosion.png"
 	var property position = null
-	var espaciosOcupados = []
-	var fuegoPuedeIrPara = []
-	method mostrar(rango){
-		game.addVisual(self)
-		game.schedule(750,{image="expCh2.png"})
-		if(rango==1){
-			game.schedule(1000,{self.expansionChFinal()})
-		}
-		else{
-			game.schedule(1000,{/*self.expansionGrFinal() */})
-		}
+	var indice = 1
+	const explosionesVinculadas=[]
+	method mostrar(alcance){
+		explosionesVinculadas.add(self)
+		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion
+		//alcance.times{i=>if(indice<=alcance){self.controlDeAlcance()}} //INTENTO 2 -> tiene sus fallas
+		//alcance.times{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //INTENTO 1 -> al parecer la "i" no va aumentando
+		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(1500,{self.finDeExplosion()})
 	}
+	method configurarExplosion(explosion){
+		game.addVisual(explosion)
+		game.onCollideDo(explosion,{elemento=>elemento.perder()})
+	}
+	/*method controlDeAlcance(){
+		direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,indice)}
+		indice+=1
+	} INTENTO2 */ 
+	method expandirse(direccion,cantidad){
+		if(direccion.puedeSeguir(position,cantidad)){
+			//if (direccion.esPosible(position,cantidad)){
+				explosionesVinculadas.add(new ExtensionDeExplosion(position = direccion.proximaPosicion(position,cantidad))) 
+			//}
+			/*else{
+				explosionesVinculadas.add(new ObjetoInvisible(direccion.proximaPosicion(position,cantidad)))
+			}*/ //ESTO ME ESTA ROMPIENDO
+		}
+		else{indice+=1}
+	}
+	method finDeExplosion(){
+		explosionesVinculadas.forEach{explosion => game.removeVisual(explosion)}
+	}
+	/*
 	method expansionChFinal(){
-			image="expCh3.png"
 			fuegoPuedeIrPara = direcciones.direccionesAldeanas(position)
 			fuegoPuedeIrPara.forEach{posicion=>espaciosOcupados.add(new ObjetoInvisible(position=posicion))}
 			espaciosOcupados.forEach{objetoInvisible => game.addVisual(objetoInvisible)}
-			espaciosOcupados.forEach{objetoInvisible => game.onCollideDo(objetoInvisible,{elemento=>elemento.perder()})}
-			
-	}
-	
-	method finDeExplosion(){
-		espaciosOcupados.forEach{objetoInvisible => game.removeVisual(objetoInvisible)}
-		game.removeVisual(self)
-	}
-		
-		//self.expandirseHorizontal() //Como podriamos hacer para que la explosion efectivamente ocupe todas las posiciones que tiene 
-		//que ocupar? Porque despues vamos a necesitar un onCollide
+	}*/
 }
-	
+const aver = new ExtensionDeExplosion(position=game.at(0,0))
+class ExtensionDeExplosion{
+	const property position = null
+	method image() = "explosion.png"
+}
 
 class ObjetoInvisible{
 	const property position = null
-	
 }
+
+
+
+
+
+
+
 
 class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el bomberman, todavia esta clase no se usa
 	var property image = null

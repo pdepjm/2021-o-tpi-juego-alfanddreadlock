@@ -76,7 +76,7 @@ class Bomba {
 	const explosion = new Explosion(position = position)
 	method explotar(rango){
 		obstaculosGenerales.posiciones().add(position)
-		game.schedule(2000,{self.explotando(rango)})
+		game.schedule(1000,{self.explotando(rango)})
 	}
 	method explotando(rango){
 		obstaculosGenerales.posiciones().remove(position)
