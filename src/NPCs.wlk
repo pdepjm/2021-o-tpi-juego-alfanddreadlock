@@ -8,6 +8,7 @@ object bomberman{
 	// esto seria para intentar lograr movimiento cuando el bomberman se mueve: const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
 	var property image = "bomberman.png"
 	var property position = game.at(0,0)
+	const property esPP = true
 	var bombasDisponibles = 1
 	const bombasPuestas = []
 	var alcance = 1
@@ -35,6 +36,8 @@ object bomberman{
 				bombasDisponibles+=1
 		}}
 	}
+	method sumarBomba(){bombasDisponibles+=1}
+	method expandirAlcance(){alcance+=1}
 
 	method perder(){ 
 		vidas-=1
@@ -57,14 +60,13 @@ object bomberman{
 
 
 class Explosion{
-	var property image = "explosion.png"
+	var property image = "Explosion0.png"
 	var property position = null
 	var indice = 1
 	const explosionesVinculadas=[]
 	method mostrar(alcance){
 		explosionesVinculadas.add(self)
-		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion
-		//alcance.times{i=>if(indice<=alcance){self.controlDeAlcance()}} //INTENTO 2 -> tiene sus fallas
+		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion??
 		//alcance.times{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //INTENTO 1 -> al parecer la "i" no va aumentando
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(1500,{self.finDeExplosion()})
@@ -98,10 +100,10 @@ class Explosion{
 			espaciosOcupados.forEach{objetoInvisible => game.addVisual(objetoInvisible)}
 	}*/
 }
-const aver = new ExtensionDeExplosion(position=game.at(0,0))
 class ExtensionDeExplosion{
+	const property esPP = false
 	const property position = null
-	method image() = "explosion.png"
+	method image() = "Explosion0.png"
 }
 
 class ObjetoInvisible{
