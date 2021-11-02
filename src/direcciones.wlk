@@ -87,3 +87,66 @@ class Abajo inherits Direccion{
 	}
 }
 
+object left {
+	method next(objeto)=objeto.posicion().left(1)
+	}
+object rigth {
+	method next(objeto)=objeto.posicion().right(1)
+	}
+object down {
+	method next(objeto)=objeto.posicion().down(1)
+	}
+object up {
+	method next(objeto)=objeto.posicion().up(1)
+	}
+	
+class Direccionamiento{
+	var nextPosition
+	var direction
+	const directions=[rigth,left,up,down]
+	method direccion()=direction
+	method posicion(personaje)=personaje.posicion()
+	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
+
+	method moveTo(objeto,direccion){
+		nextPosition=direction.next(objeto)
+		if (self.isPossible(nextPosition))
+		{
+		objeto.posicionar(nextPosition)
+		}
+	}
+	
+	method obstacule(objeto){
+		nextPosition=direction.next(objeto)
+		return self.isPossible(nextPosition)
+	}
+	
+	method otherDirection(){
+		direction=directions.anyOne()		
+	}
+
+	method automatic(personaje){
+		self.otherDirection()
+		self.moveTo(personaje,direction)
+		if(self.obstacule(personaje))
+		{
+		self.otherDirection()
+		self.moveTo(personaje,direction)
+		}
+	}
+}
+
+class Monstruo{
+	var property imageI = null
+	var property imageD = null
+	var property image = null
+	var property position = null
+	method imageI()=imageI
+	method imageD()=imageD
+	method posicion()=position
+	method imageActual(imageActual){image=imageActual}
+	method posicionar(posicion){position=posicion}
+}
+
+const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12))
+const direccionamientoCarpincho = new Direccionamiento(direction=left,nextPosition=left.next(carpincho))
