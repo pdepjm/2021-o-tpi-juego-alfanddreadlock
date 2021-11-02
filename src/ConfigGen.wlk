@@ -10,13 +10,13 @@ object config{
 		const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
 		//game.addVisual(carpincho)
 		game.addVisual(bomberman)
-
+		const llama = new Monstruo(image = "LlamaDer.png", position = game.at(2,5),nombre="llama")
+		game.addVisual(llama)
+		game.onTick(50,"llamaMoving", {=>llama.caminar()})
 		//game.addVisual(llama)
 		//game.onTick(250,"carpinchoMoving",{=> direccionCarpincho.moverAutomatico(carpincho)})
-		//game.onTick(300,"llamaMoving",{=>direccionLlama.moverAutomatico(llama)})
 //		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
-//		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}
 
 		self.configurarTeclas()

@@ -13,14 +13,15 @@ const poderes = ["fuego.png","bombaAgarrable.png"]
 class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una única posición y una imágen.
 	var property image = null
 	var property position = null
-	var poder = null
+	var poder = null //poderes.anyOne()
 	const esRompible = false
 	const posibilidadDePoder = [true,false,false]
 	method perder(){
 		if(esRompible){
 			if(posibilidadDePoder.anyOne()){
-				poder = new Agarrable(image = poderes.anyOne(),position = position)
+				poder = new Agarrable(image = poderes.anyOne(),position = position) //tenemos que hacer distintas clases para la expansion y para la bombaextra
 				game.addVisual(poder)
+				poder.crear()
 				//Esto desde el vamos esta mal, pero no se como podria asegurarme de que el poder solo conozca al bomberman
 				game.onCollideDo(poder,{algoDinamico => if(algoDinamico.esPP()){poder.meAgarro(algoDinamico)}})
 				
@@ -54,29 +55,6 @@ object obstaculosGenerales{
 	method posiciones() = self.obstaculos().map{obstaculo=>obstaculo.position()}
 }
 
-/* ******************************************************LO QUE BORRO GER*********************************************************
-
- class Panel{
-	const property image = "panel.png"
-	var property position = game.at(0,5)
-	method posicion()=position
-}
-
-object panel{
-	const property image = "panel.png"
-	const property position = game.at(0,15)
-	const property posiciones = [game.at(0,13),game.at(1,13),game.at(2,13)]
-	const paneles = []
-	method posicion()=position
-	method crear(){
-		posiciones.forEach({posicion=>paneles.add(new Panel(position=posicion))})
-		generador.sumarVisual(paneles)
-	}
-}
-
-
-***************************************FIN DE LO QUE BORRO GER ***********************************************************
-*/
 class Agarrable{
 	var property image = null
 	var property position = null

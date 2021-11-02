@@ -1,29 +1,12 @@
 import wollok.game.*
 import ConfigGen.*
 import Obstaculos.*
-/*
-object izquierda {
-	method ubicar(objeto)=objeto.posicion().left(1)
-	}
-object derecha {
-	method ubicar(objeto)=objeto.posicion().right(1)
-	}
-object abajo {
-	method ubicar(objeto)=objeto.posicion().down(1)
-	}
-object arriba {
-	method ubicar(objeto)=objeto.posicion().up(1)
-	}
-*/
+
 const izquierda= new Izq()
 const derecha = new Der()
 const arriba = new Arriba()
 const abajo = new Abajo()
 const direccionesPermitidas = [izquierda,derecha,arriba,abajo]
-/*object direcciones{
-	const direccionesPosibles = [izquierda,derecha,arriba,abajo]
-	method direccionesAldeanas(posicion) = direccionesPosibles.map{direccion=>direccion.proximaPosicion(posicion)}
-}*/
 
 class Direccion{
 	//const property direcciones = [izquierda,arriba,abajo,derecha]
@@ -35,6 +18,7 @@ class Direccion{
 		if(self.esPosible(posicion,cantidad)){
 			personaje.position(siguientePosicion)
 		}
+		//personaje.direccionar(self)
 	}
 	
 	method esPosible(posicion,cantidad){
@@ -66,24 +50,28 @@ class Direccion{
 // No se me ocurrio otra forma de poder juntar la parte de left(1), right(1), etc. Si pudiesemos meter alguna logica asi directamente 
 // en Direccion, podriamos tener solo const izquierda = new Direccion(dir = left) (O algo por el estilo)
 
-class Izq inherits Direccion{ 
+class Izq inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.left(cantidad) 
 	}
+	method nombre() = "Izquierda"
 }
 class Der inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.right(cantidad)
 	}
+	method nombre() = "Derecha"
 }
 class Arriba inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.up(cantidad)
 	}
+	method nombre() = "Arriba"
 }
 class Abajo inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.down(cantidad)
 	}
+	method nombre()= "Abajo"
 }
 

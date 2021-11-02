@@ -67,7 +67,6 @@ class Explosion{
 	method mostrar(alcance){
 		explosionesVinculadas.add(self)
 		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion??
-		//alcance.times{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //INTENTO 1 -> al parecer la "i" no va aumentando
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(1500,{self.finDeExplosion()})
 	}
@@ -75,10 +74,7 @@ class Explosion{
 		game.addVisual(explosion)
 		game.onCollideDo(explosion,{elemento=>elemento.perder()})
 	}
-	/*method controlDeAlcance(){
-		direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,indice)}
-		indice+=1
-	} INTENTO2 */ 
+	
 	method expandirse(direccion,cantidad){
 		if(direccion.puedeSeguir(position,cantidad)){
 			//if (direccion.esPosible(position,cantidad)){
@@ -93,12 +89,6 @@ class Explosion{
 	method finDeExplosion(){
 		explosionesVinculadas.forEach{explosion => game.removeVisual(explosion)}
 	}
-	/*
-	method expansionChFinal(){
-			fuegoPuedeIrPara = direcciones.direccionesAldeanas(position)
-			fuegoPuedeIrPara.forEach{posicion=>espaciosOcupados.add(new ObjetoInvisible(position=posicion))}
-			espaciosOcupados.forEach{objetoInvisible => game.addVisual(objetoInvisible)}
-	}*/
 }
 class ExtensionDeExplosion{
 	const property esPP = false
@@ -120,6 +110,7 @@ class ObjetoInvisible{
 class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el bomberman, todavia esta clase no se usa
 	var property image = null
 	var property position = null
+	var property nombre = ""
 	var vidas = 3
 	method perder(){ 
 		vidas-=1
@@ -133,20 +124,38 @@ class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el
 	method modificarImagen(imagen){
 		image = imagen
 	}
+	method direccionar(direccion){
+		image = nombre + direccion.nombre() + ".png"
+	}
 }
-/* 
-class Monstruo{
-	var property imageI = null
+class Monstruo inherits Personaje{
+	/*var property imageI = null
 	var property imageD = null
 	var property image = null
 	var property position = null
 	method imageI()=imageI
-	method imageD()=imageD
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
+	method imageD()=imageD*/
+	var direccion = direccionesPermitidas.anyOne()
+	method caminar(){
+		if(direccion.esPosible(position,1)){
+			direccion.movemePara(self,position,1)
+		}
+		else{
+			direccion = direccionesPermitidas.anyOne()
+		}
+		game.schedule(30,self.atacar())
+	}
+	method atacar()
 }
 
+object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(12,1),nombre="Llama"){
+	const baba
+	override method atacar(){
+		baba = new Baba()
+	}
+} 
+class Carpincho inherits Monstruo{}
+/* 
 class MonstruoADistancia inherits Monstruo{
 	method escupir(){
 		const baba = new Baba()
@@ -166,51 +175,9 @@ class Baba{
 	
 }
 const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png", position = game.at(12,2))
-const direccionCarpincho = new Direccion (direccionActual=izquierda)
 const llama = new MonstruoADistancia (imageI="llamaIzq.png",imageD="LlamaDer.png",position = game.at(9,8))
-const direccionLlama = new Direccion (direccionActual=izquierda)
 */
 /* object llama{
-	var property image = "LlamaIzq.png"
-	var property direccion = "izquierda"
-	var property position = game.at(9,8)
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
-
-	method caminar(){
-		if (direccion=="izquierda"){
-			self.caminarAIzquierda()
-			}else{
-		self.caminarADerecha()
-		}
-	}
-	method caminarAIzquierda(){
-		if (direccion == "izquierda"){
-			image = "LlamaIzq.png"
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
-			direccion = "derecha"
-			self.caminarADerecha()
-				}else{
-				position = posicionSiguiente 
-			}
-		}
-	}
-	
-	method caminarADerecha(){
-		if (direccion == "derecha"){
-			image = "LlamaDer.png"
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
-				direccion = "izquierda"
-				self.caminarAIzquierda()
-				}else{
-				position = posicionSiguiente
-			}
-		}
-	}
 	
 	method escupir(){
 		if(direccion == "derecha"){
