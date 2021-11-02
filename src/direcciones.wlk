@@ -143,20 +143,34 @@ class Monstruo{
 	var property imageD = null
 	var property image = null
 	var property position = null
+	const movimiento = null
+	const mata = null
 	method imageI()=imageI
 	method imageD()=imageD
 	method posicion()=position
 	method imageActual(imageActual){image=imageActual}
 	method posicionar(posicion){position=posicion}
-	method matar(){//Hace perder a bomberman
+//Hace perder a bomberman	
+	method matar(){
 		if(self.posicion()==bomberman.posicion()){
 			bomberman.perder()
 		}
 	}
-	method morir(){
-		game.removeVisual(self)
+	method perder(){
+		muerte.a(self)
+		game.removeTickEvent(movimiento)
+		game.removeTickEvent(mata)
+		
 	}
 }
 
-const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12))
-const direccionamientoCarpincho = new Direccionamiento(direction=left,nextPosition=left.next(carpincho))
+object muerte{
+	method a(personaje){
+		game.removeVisual(personaje)
+	}
+}
+
+const carpincho1 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino")
+const carpincho2 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino")
+const direccionamientoCarpincho1 = new Direccionamiento(direction=left,nextPosition=left.next(carpincho1))
+const direccionamientoCarpincho2 = new Direccionamiento (direction=left,nextPosition=left.next(carpincho2))

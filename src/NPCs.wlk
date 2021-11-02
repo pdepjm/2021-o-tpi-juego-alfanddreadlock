@@ -60,10 +60,6 @@ object bomberman{
 
 
 
-
-
-
-
 class Explosion{
 	var property image = "Explosion0.png"
 	var property position = null
@@ -140,18 +136,6 @@ class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el
 	}
 }
 /* 
-class Monstruo{
-	var property imageI = null
-	var property imageD = null
-	var property image = null
-	var property position = null
-	method imageI()=imageI
-	method imageD()=imageD
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
-}
-
 class MonstruoADistancia inherits Monstruo{
 	method escupir(){
 		const baba = new Baba()
@@ -170,8 +154,6 @@ class Baba{
 	method posicionar(posicion){position=posicion}
 	
 }
-const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png", position = game.at(12,2))
-const direccionCarpincho = new Direccion (direccionActual=izquierda)
 const llama = new MonstruoADistancia (imageI="llamaIzq.png",imageD="LlamaDer.png",position = game.at(9,8))
 const direccionLlama = new Direccion (direccionActual=izquierda)
 */
@@ -182,41 +164,6 @@ const direccionLlama = new Direccion (direccionActual=izquierda)
 	var property posicionAnterior = game.at(0,0)
 	var property posicionSiguiente = game.at(0,0)
 
-	method caminar(){
-		if (direccion=="izquierda"){
-			self.caminarAIzquierda()
-			}else{
-		self.caminarADerecha()
-		}
-	}
-	method caminarAIzquierda(){
-		if (direccion == "izquierda"){
-			image = "LlamaIzq.png"
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
-			direccion = "derecha"
-			self.caminarADerecha()
-				}else{
-				position = posicionSiguiente 
-			}
-		}
-	}
-	
-	method caminarADerecha(){
-		if (direccion == "derecha"){
-			image = "LlamaDer.png"
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-		if(obstaculosGenerales.posiciones().contains(posicionSiguiente)){
-				direccion = "izquierda"
-				self.caminarAIzquierda()
-				}else{
-				position = posicionSiguiente
-			}
-		}
-	}
-	
 	method escupir(){
 		if(direccion == "derecha"){
 			const baba = new Baba(direccion = direccion, position = position, image = "BabaDer.png")

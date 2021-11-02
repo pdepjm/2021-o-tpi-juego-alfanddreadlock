@@ -8,12 +8,16 @@ const babaEnJuego = []
 object config{
 	method configuracionInicial(){
 		const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-		game.addVisual(carpincho)
+		game.addVisual(carpincho1)
+		game.addVisual(carpincho2)
 		game.addVisual(bomberman)
 
+		game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
+		game.onTick(1,"carpincho1Asesino",{=>carpincho1.matar()})
+		game.onTick(200,"carpincho2Moving",{=> direccionamientoCarpincho2.automatic(carpincho2)})
+		game.onTick(1,"carpincho2Asesino",{=>carpincho2.matar()})
+		
 		//game.addVisual(llama)
-		game.onTick(250,"carpinchoMoving",{=> direccionamientoCarpincho.automatic(carpincho)})
-		game.onTick(1,"carpinchoAsesino",{=>carpincho.matar()})
 		//game.onTick(300,"llamaMoving",{=>direccionLlama.moverAutomatico(llama)})
 //		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
