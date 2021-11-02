@@ -131,8 +131,10 @@ class Monstruo{
 	var property position = null
 	const movimiento = null
 	const mata = null
+	const sonidoMatar=null
 	method imageI()=imageI
 	method imageD()=imageD
+	method sonidoMatar()=sonidoMatar
 	method posicion()=position
 	method imageActual(imageActual){image=imageActual}
 	method posicionar(posicion){position=posicion}
@@ -140,6 +142,7 @@ class Monstruo{
 	method matar(){
 		if(self.posicion()==bomberman.posicion()){
 			bomberman.perder()
+			game.sound(sonidoMatar).play()
 		}
 	}
 //Monstruo pierde al ser explotado
@@ -157,7 +160,7 @@ object muerte{
 	}
 }
 
-const carpincho1 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino")
-const carpincho2 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino")
+const carpincho1 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino",sonidoMatar="risaPatan.mp3")
+const carpincho2 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino",sonidoMatar="risaPatan.mp3")
 const direccionamientoCarpincho1 = new Direccionamiento(direction=left,nextPosition=left.next(carpincho1))
 const direccionamientoCarpincho2 = new Direccionamiento (direction=left,nextPosition=left.next(carpincho2))

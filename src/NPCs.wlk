@@ -2,6 +2,7 @@ import wollok.game.*
 import direcciones.*
 import ConfigGen.*
 import Obstaculos.*
+import soundProducer.*
 
 
 object bomberman{
@@ -74,6 +75,7 @@ class Explosion{
 	}
 	method configurarExplosion(explosion){
 		game.addVisual(explosion)
+		game.sound("bombaSonidoCorto.mp3").play()
 		game.onCollideDo(explosion,{elemento=>elemento.perder()})
 	}
 	/*method controlDeAlcance(){
@@ -110,11 +112,6 @@ class ExtensionDeExplosion{
 class ObjetoInvisible{
 	const property position = null
 }
-
-
-
-
-
 
 
 
