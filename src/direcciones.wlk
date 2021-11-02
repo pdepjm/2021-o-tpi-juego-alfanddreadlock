@@ -1,6 +1,8 @@
 import wollok.game.*
 import ConfigGen.*
 import Obstaculos.*
+import NPCs.*
+
 /*
 object izquierda {
 	method ubicar(objeto)=objeto.posicion().left(1)
@@ -86,7 +88,7 @@ class Abajo inherits Direccion{
 		return posicion.down(cantidad)
 	}
 }
-
+//Versión de Movimiento de Ger
 object left {
 	method next(objeto)=objeto.posicion().left(1)
 	}
@@ -108,7 +110,7 @@ class Direccionamiento{
 	method posicion(personaje)=personaje.posicion()
 	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
 
-	method moveTo(objeto,direccion){
+	method moveTo(objeto,direccion){//Mover un personaje, una posición en la dirección elegida.
 		nextPosition=direction.next(objeto)
 		if (self.isPossible(nextPosition))
 		{
@@ -116,16 +118,16 @@ class Direccionamiento{
 		}
 	}
 	
-	method obstacule(objeto){
+	method obstacule(objeto){//Dice si en la próxima posición hay un obstaculo.
 		nextPosition=direction.next(objeto)
 		return self.isPossible(nextPosition)
 	}
 	
-	method otherDirection(){
+	method otherDirection(){//Elige otra dirección al azar
 		direction=directions.anyOne()		
 	}
 
-	method automatic(personaje){
+	method automatic(personaje){//un método de direccionamiento aleatorio para el personaje elegido
 		self.otherDirection()
 		self.moveTo(personaje,direction)
 		if(self.obstacule(personaje))
@@ -146,6 +148,14 @@ class Monstruo{
 	method posicion()=position
 	method imageActual(imageActual){image=imageActual}
 	method posicionar(posicion){position=posicion}
+	method matar(){//Hace perder a bomberman
+		if(self.posicion()==bomberman.posicion()){
+			bomberman.perder()
+		}
+	}
+	method morir(){
+		game.removeVisual(self)
+	}
 }
 
 const carpincho = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12))

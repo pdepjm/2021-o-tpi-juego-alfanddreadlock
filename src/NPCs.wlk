@@ -13,7 +13,10 @@ object bomberman{
 	const bombasPuestas = []
 	var alcance = 1
 	var vidas = 3
-	
+	method posicion()=position
+	method reiniciarPosicion(){//Bomberman vuelve a la posición de inicio
+		position=game.at(0,0)
+	}
 	method moverPara(direccion) {
 		direccion.movemePara(self,position,1) //las direcciones son quienes se encargan de mover al personaje
 	}
@@ -41,8 +44,10 @@ object bomberman{
 
 	method perder(){ 
 		vidas-=1
+		self.reiniciarPosicion()
 		if(vidas<0){
 			self.morir()
+		
 		}
 	}
 	method morir(){

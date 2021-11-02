@@ -13,6 +13,7 @@ object config{
 
 		//game.addVisual(llama)
 		game.onTick(250,"carpinchoMoving",{=> direccionamientoCarpincho.automatic(carpincho)})
+		game.onTick(1,"carpinchoAsesino",{=>carpincho.matar()})
 		//game.onTick(300,"llamaMoving",{=>direccionLlama.moverAutomatico(llama)})
 //		game.onTick(400,"llamaMoving",{=> llama.caminar()})
 		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
