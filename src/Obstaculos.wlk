@@ -54,48 +54,28 @@ object obstaculosGenerales{
 	method posiciones() = self.obstaculos().map{obstaculo=>obstaculo.position()}
 }
 
-/* ******************************************************LO QUE BORRO GER*********************************************************
-
- class Panel{
-	const property image = "panel.png"
-	var property position = game.at(0,5)
-	method posicion()=position
-}
-
-object panel{
-	const property image = "panel.png"
-	const property position = game.at(0,15)
-	const property posiciones = [game.at(0,13),game.at(1,13),game.at(2,13)]
-	const paneles = []
-	method posicion()=position
-	method crear(){
-		posiciones.forEach({posicion=>paneles.add(new Panel(position=posicion))})
-		generador.sumarVisual(paneles)
-	}
-}
+//El panel lo saqué al carajo, si tenemos tiempo lo creamos.
 
 
-***************************************FIN DE LO QUE BORRO GER ***********************************************************
-*/
 class Agarrable{
 	var property image = null
 	var property position = null
-	method meAgarro(alguien){
-		self.efecto(alguien)
+	method meAgarro(alguien){			//este alguien, sólo es Bomberman --> method meAgarro()
+		self.efecto(alguien)			//self.efecto(bomberman)
 		game.removeVisual(self)
 	}
-	method efecto(alguien){
+	method efecto(alguien){				//Acá, efectoPP() para diferenciar de la próxima clase con efectoFuego(alguien)
 		if(image=="fuego.png"){
-			alguien.expandirAlcance()
+			alguien.expandirAlcance()	//	bomberman.expandirAlcance()
 		}
 		else{
-			alguien.sumarBomba()
+			alguien.sumarBomba()		//bomberman.sumarBomba()
 		}
 	}
 	method perder(){game.removeVisual(self)}
 }
 class Fuego inherits Agarrable{
-	override method efecto(alguien){
+	override method efecto(alguien){	//Acá, le pondría efectoFuego(alguien) 
 		
 	}
 }

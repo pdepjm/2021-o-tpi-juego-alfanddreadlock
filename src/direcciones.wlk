@@ -3,20 +3,6 @@ import ConfigGen.*
 import Obstaculos.*
 import NPCs.*
 
-/*
-object izquierda {
-	method ubicar(objeto)=objeto.posicion().left(1)
-	}
-object derecha {
-	method ubicar(objeto)=objeto.posicion().right(1)
-	}
-object abajo {
-	method ubicar(objeto)=objeto.posicion().down(1)
-	}
-object arriba {
-	method ubicar(objeto)=objeto.posicion().up(1)
-	}
-*/
 const izquierda= new Izq()
 const derecha = new Der()
 const arriba = new Arriba()
@@ -118,14 +104,14 @@ class Direccionamiento{
 		}
 	}
 	
-	method obstacule(objeto){//Dice si en la próxima posición hay un obstaculo.
-		nextPosition=direction.next(objeto)
+	method obstacule(personaje){//Dice si en la próxima posición hay un obstaculo.
+		nextPosition=direction.next(personaje)
 		return self.isPossible(nextPosition)
 	}
 	
 	method otherDirection(){//Elige otra dirección al azar
 		direction=directions.anyOne()		
-	}
+}
 
 	method automatic(personaje){//un método de direccionamiento aleatorio para el personaje elegido
 		self.otherDirection()
@@ -150,20 +136,21 @@ class Monstruo{
 	method posicion()=position
 	method imageActual(imageActual){image=imageActual}
 	method posicionar(posicion){position=posicion}
-//Hace perder a bomberman	
+//Monstruo hace perder a bomberman	
 	method matar(){
 		if(self.posicion()==bomberman.posicion()){
 			bomberman.perder()
 		}
 	}
+//Monstruo pierde al ser explotado
 	method perder(){
 		muerte.a(self)
 		game.removeTickEvent(movimiento)
 		game.removeTickEvent(mata)
-		
 	}
 }
 
+//Mata monstruos, no lo apliqué a bomberman.
 object muerte{
 	method a(personaje){
 		game.removeVisual(personaje)
