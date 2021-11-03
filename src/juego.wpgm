@@ -4,7 +4,6 @@ import texto.*
 import soundProducer.*
 
 program juego {
-	
 	game.title("Bomberman del Subdesarrollo")
 	game.cellSize(60)
 	game.height(14)

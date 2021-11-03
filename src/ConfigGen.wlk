@@ -3,8 +3,8 @@ import direcciones.*
 import soundProducer.*
 import NPCs.*
 import Obstaculos.*
-const babaEnJuego = []
 
+	const babasEnJuego = []
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
 	const personajes = [bomberman,llama/* carpincho,carpincho1,carpincho2*/]
@@ -33,6 +33,7 @@ object config{
 	}
 	method configurarPersonajes(){
 		personajes.forEach{personaje=>personaje.crear()
+		game.onTick(150,"moverBabas",{babasEnJuego.forEach{baba=>baba.desplazarse()}})
 		}
 		
 		//game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
