@@ -76,16 +76,16 @@ class Abajo inherits Direccion{
 }
 //Versión de Movimiento de Ger
 object left {
-	method next(objeto)=objeto.posicion().left(1)
+	method next(objeto)=objeto.position().left(1)
 	}
 object rigth {
-	method next(objeto)=objeto.posicion().right(1)
+	method next(objeto)=objeto.position().right(1)
 	}
 object down {
-	method next(objeto)=objeto.posicion().down(1)
+	method next(objeto)=objeto.position().down(1)
 	}
 object up {
-	method next(objeto)=objeto.posicion().up(1)
+	method next(objeto)=objeto.position().up(1)
 	}
 	
 class Direccionamiento{
@@ -93,14 +93,14 @@ class Direccionamiento{
 	var direction
 	const directions=[rigth,left,up,down]
 	method direccion()=direction
-	method posicion(personaje)=personaje.posicion()
+	method posicion(personaje)=personaje.position()
 	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
 
 	method moveTo(objeto,direccion){//Mover un personaje, una posición en la dirección elegida.
 		nextPosition=direction.next(objeto)
 		if (self.isPossible(nextPosition))
 		{
-		objeto.posicionar(nextPosition)
+		objeto.position(nextPosition)
 		}
 	}
 	
@@ -123,44 +123,3 @@ class Direccionamiento{
 		}
 	}
 }
-
-class Monstruo{
-	var property imageI = null
-	var property imageD = null
-	var property image = null
-	var property position = null
-	const movimiento = null
-	const mata = null
-	const sonidoMatar=null
-	method imageI()=imageI
-	method imageD()=imageD
-	method sonidoMatar()=sonidoMatar
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
-//Monstruo hace perder a bomberman	
-	method matar(){
-		if(self.posicion()==bomberman.posicion()){
-			bomberman.perder()
-			game.sound(sonidoMatar).play()
-		}
-	}
-//Monstruo pierde al ser explotado
-	method perder(){
-		muerte.a(self)
-		game.removeTickEvent(movimiento)
-		game.removeTickEvent(mata)
-	}
-}
-
-//Mata monstruos, no lo apliqué a bomberman.
-object muerte{
-	method a(personaje){
-		game.removeVisual(personaje)
-	}
-}
-
-const carpincho1 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino",sonidoMatar="risaPatan.mp3")
-const carpincho2 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino",sonidoMatar="risaPatan.mp3")
-const direccionamientoCarpincho1 = new Direccionamiento(direction=left,nextPosition=left.next(carpincho1))
-const direccionamientoCarpincho2 = new Direccionamiento (direction=left,nextPosition=left.next(carpincho2))

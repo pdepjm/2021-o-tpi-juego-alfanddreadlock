@@ -10,6 +10,7 @@ object config{
 		const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
 		game.addVisual(carpincho1)
 		game.addVisual(carpincho2)
+		game.addVisual(llama)
 		game.addVisual(bomberman)
 
 		game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
@@ -17,11 +18,10 @@ object config{
 		game.onTick(200,"carpincho2Moving",{=> direccionamientoCarpincho2.automatic(carpincho2)})
 		game.onTick(1,"carpincho2Asesino",{=>carpincho2.matar()})
 		
-		//game.addVisual(llama)
-		//game.onTick(300,"llamaMoving",{=>direccionLlama.moverAutomatico(llama)})
-//		game.onTick(400,"llamaMoving",{=> llama.caminar()})
-		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
-//		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
+		game.onTick(200,"llamaMoving",{=>llama.movimiento()})
+		game.onTick(2000,"llamaTurn",{=> llama.cambiarDireccion()})
+		game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
+		game.onTick(200,"babaMover",{=> babaEnJuego.forEach{unaBaba => unaBaba.avanzar()}})
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}
 
 		self.configurarTeclas()

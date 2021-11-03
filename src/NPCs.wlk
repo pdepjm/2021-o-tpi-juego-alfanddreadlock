@@ -4,7 +4,6 @@ import ConfigGen.*
 import Obstaculos.*
 import soundProducer.*
 
-
 object bomberman{
 	// esto seria para intentar lograr movimiento cuando el bomberman se mueve: const property movDerecha = ["bombermanDer1.png","bombermanDer2.png","bombermanDer3.png","bombermanDer4.png","bombermanDer5.png","bomberman.png"]
 	var property image = "bomberman.png"
@@ -132,64 +131,82 @@ class Personaje{ //Ya que hay cosas repetidas tanto en los mounstruos como en el
 		image = imagen
 	}
 }
-/* 
+
 class MonstruoADistancia inherits Monstruo{
-	method escupir(){
-		const baba = new Baba()
-		game.addVisual(baba)
-		babaEnJuego.add(baba)
-	}
-}
-
-class Baba{
-	var property imageI = null
-	var property imageD = null
-	var property image = imageI
-	var property position = null
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
-	
-}
-const llama = new MonstruoADistancia (imageI="llamaIzq.png",imageD="LlamaDer.png",position = game.at(9,8))
-const direccionLlama = new Direccion (direccionActual=izquierda)
-*/
-/* object llama{
-	var property image = "LlamaIzq.png"
-	var property direccion = "izquierda"
-	var property position = game.at(9,8)
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
-
-	method escupir(){
-		if(direccion == "derecha"){
-			const baba = new Baba(direccion = direccion, position = position, image = "BabaDer.png")
-		}
-		else {
-			const baba = new Baba(direccion = direccion, position = position, image = "BabaIzq.png")
-		}
-		game.addVisual(baba)
-		babaEnJuego.add(baba)
-	}
-}
-
-class Baba{
+	const direccionesPosibles = #{izquierda, derecha}
 	var property direccion = null
-	var property position = null
+	
+	/* override method movimiento(){				Este movimiento serviria para el carpincho con el con este modelo de direcciones
+		if(direccion.esPosible(position,1)){
+		 	direccion.movemePara(self, position, 1)
+		 }
+		else{ 
+			self.cambiarDireccion()
+			direccion.movemePara(self, position, 1)
+		}
+	}*/
+	
+	method movimiento(){
+		direccion.movemePara(self,position,1)
+	}
+	
+	method escupir(){
+		const baba = new Baba(position = position, direccion = direccion, image = "BabaDer.png")
+		game.addVisual(baba)
+		babaEnJuego.add(baba)
+	}
+	
+	method cambiarDireccion() {
+		direccion = direccionesPosibles.find({i => i != direccion}) // Hay que hacer un anyOne que no devuelva el mismo valor (se puede hacer tambien agregando y sacando, es medio feo)
+	}
+}
+
+class Baba{
 	var property image = null
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
+	var property position = null
+	const direccion = null
 	
 	method avanzar(){
-		if(direccion == "derecha"){
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-			position = posicionSiguiente
-		}
-		else {
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-			position = posicionSiguiente
+		direccion.movemePara(self, position, 1)
+	}
+}
+const llama = new MonstruoADistancia (position = game.at(6,12), direccion = izquierda, imageI = "LlamaIzq.png", imageD = "LlamaDer.png", image = "LlamaIzq.png")
+
+class Monstruo{
+	var property imageI = null
+	var property imageD = null
+	var property image = null
+	var property position = null
+	const direcciones = #{izquierda, derecha, arriba, abajo}
+	const movimiento = null
+	const mata = null
+	const sonidoMatar=null	
+	method sonidoMatar()=sonidoMatar
+	
+//Monstruo hace perder a bomberman	
+	method matar(){
+		if(self.position()==bomberman.posicion()){
+			bomberman.perder()
+			game.sound(sonidoMatar).play()
 		}
 	}
-}*/
+//Monstruo pierde al ser explotado
+	method perder(){
+		muerte.a(self)
+		game.removeTickEvent(movimiento)
+		game.removeTickEvent(mata)
+	}
+}
+
+//Mata monstruos, no lo apliqué a bomberman.
+object muerte{
+	method a(personaje){
+		game.removeVisual(personaje)
+	}
+}
+
+const carpincho1 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino",sonidoMatar="risaPatan.mp3")
+const carpincho2 = new Monstruo (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino",sonidoMatar="risaPatan.mp3")
+const direccionamientoCarpincho1 = new Direccionamiento(direction=left,nextPosition=left.next(carpincho1))
+const direccionamientoCarpincho2 = new Direccionamiento (direction=left,nextPosition=left.next(carpincho2))
+
