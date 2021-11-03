@@ -2,14 +2,10 @@ import wollok.game.*
 import ConfigGen.*
 import Obstaculos.*
 
-const izquierda= new Izq()
-const derecha = new Der()
-const arriba = new Arriba()
-const abajo = new Abajo()
 const direccionesPermitidas = [izquierda,derecha,arriba,abajo]
 
 class Direccion{
-	//const property direcciones = [izquierda,arriba,abajo,derecha]
+	
 	var property siguientePosicion=null
 	var property direccionActual=null
 	
@@ -26,52 +22,80 @@ class Direccion{
 	}
 	method puedeSeguir(position,cantidad) = (0..cantidad-1).all{i=>self.esPosible(position,i)}
 	method proximaPosicion(posicion,cantidad)
-	//method proximaDireccion(direccion){direccionActual=direccion}
-	/*
-	method direccionAlAzar()=direcciones.anyOne()
-	method cambiarDireccion(){
-		if (direccionActual==direcciones.head())
-		direccionActual=derecha
-		else direccionActual=izquierda
-		return direccionActual
-	}
-
-	
-	method moverAutomatico(personaje){
-		if (self.esPosible(personaje)){
-		personaje.posicionar(self.proximaPosicion(personaje))
-		}else{
-		self.cambiarDireccion()
-		personaje.posicionar(self.proximaPosicion(personaje))
-		}
-	}
-	*/
 }
-// No se me ocurrio otra forma de poder juntar la parte de left(1), right(1), etc. Si pudiesemos meter alguna logica asi directamente 
-// en Direccion, podriamos tener solo const izquierda = new Direccion(dir = left) (O algo por el estilo)
 
-class Izq inherits Direccion{
+object izquierda inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.left(cantidad) 
 	}
 	method nombre() = "Izquierda"
 }
-class Der inherits Direccion{
+object derecha inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.right(cantidad)
 	}
 	method nombre() = "Derecha"
 }
-class Arriba inherits Direccion{
+object arriba inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.up(cantidad)
 	}
 	method nombre() = "Arriba"
 }
-class Abajo inherits Direccion{
+object abajo inherits Direccion{
 	override method proximaPosicion(posicion,cantidad){
 		return posicion.down(cantidad)
 	}
 	method nombre()= "Abajo"
 }
+//Versión de Movimiento de Ger
+object left {
+	method next(objeto)=objeto.posicion().left(1)
+	}
+object rigth {
+	method next(objeto)=objeto.posicion().right(1)
+	}
+object down {
+	method next(objeto)=objeto.posicion().down(1)
+	}
+object up {
+	method next(objeto)=objeto.posicion().up(1)
+	}
+	
+class Direccionamiento{
+	var nextPosition
+	var direction
+	const directions=[rigth,left,up,down]
+	method direccion()=direction
+	method posicion(personaje)=personaje.posicion()
+	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
+
+	method moveTo(objeto,direccion){//Mover un personaje, una posición en la dirección elegida.
+		nextPosition=direction.next(objeto)
+		if (self.isPossible(nextPosition))
+		{
+		objeto.posicionar(nextPosition)
+		}
+	}
+	
+	method obstacule(personaje){//Dice si en la próxima posición hay un obstaculo.
+		nextPosition=direction.next(personaje)
+		return self.isPossible(nextPosition)
+	}
+	
+	method otherDirection(){//Elige otra dirección al azar
+		direction=directions.anyOne()		
+}
+
+	method automatic(personaje){//un método de direccionamiento aleatorio para el personaje elegido
+		self.otherDirection()
+		self.moveTo(personaje,direction)
+		if(self.obstacule(personaje))
+		{
+		self.otherDirection()
+		self.moveTo(personaje,direction)
+		}
+	}
+}
+
 

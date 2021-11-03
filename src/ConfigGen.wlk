@@ -6,19 +6,11 @@ import Obstaculos.*
 const babaEnJuego = []
 
 object config{
+	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
+	const personajes = [bomberman,carpincho,llama/* ,carpincho1,carpincho2*/]
 	method configuracionInicial(){
-		const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-		//game.addVisual(carpincho)
-		game.addVisual(bomberman)
-		const llama = new Monstruo(image = "LlamaDer.png", position = game.at(2,5),nombre="llama")
-		game.addVisual(llama)
-		game.onTick(50,"llamaMoving", {=>llama.caminar()})
-		//game.addVisual(llama)
-		//game.onTick(250,"carpinchoMoving",{=> direccionCarpincho.moverAutomatico(carpincho)})
-//		game.onTick(400,"llamaMoving",{=> llama.caminar()})
-		//game.onTick(4000,"llamaEscupir",{=> llama.escupir()})
-		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}
-
+		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
+		self.configurarPersonajes()
 		self.configurarTeclas()
 		self.configurarColisiones()
 //		 Saber qué clase instanciar
@@ -37,9 +29,19 @@ object config{
 		keyboard.space().onPressDo({bomberman.ponerBomba()})
 	}
 	method configurarColisiones(){
+		game.onCollideDo(bomberman,{elemento=>elemento.efecto(bomberman)})
+		obstaculosGenerales.obstaculos().forEach{obstaculo=>game.onCollideDo(obstaculo,{elemento=>elemento.efecto(obstaculo)})} //muy largo, delegar
+	}
+	method configurarPersonajes(){
+		personajes.forEach{personaje=>personaje.crear()}
+		
+		//game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
+		//game.onTick(1,"carpincho1Asesino",{=>carpincho1.matar()})
+		//game.onTick(200,"carpincho2Moving",{=> direccionamientoCarpincho2.automatic(carpincho2)})
+		//game.onTick(1,"carpincho2Asesino",{=>carpincho2.matar()}) 
 	}
 }
-
+/*
 object gif{
 	var indice = 0
 	method hacerGif(objeto,imagenes){
@@ -49,6 +51,6 @@ object gif{
 		game.schedule(100,{objeto.modificarImagen(imagenes.get(indice))})
 		indice+=1
 	}
-}
+}*/
 
 
