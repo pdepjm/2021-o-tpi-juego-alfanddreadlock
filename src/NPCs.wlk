@@ -59,12 +59,8 @@ class Explosion{
 	
 	method expandirse(direccion,cantidad){
 		if(direccion.puedeSeguir(position,cantidad)){
-			//if (direccion.esPosible(position,cantidad)){
 				explosionesVinculadas.add(new ExtensionDeExplosion(position = direccion.proximaPosicion(position,cantidad))) 
-			//}
-			/*else{
-				explosionesVinculadas.add(new ObjetoInvisible(direccion.proximaPosicion(position,cantidad)))
-			}*/ //ESTO ME ESTA ROMPIENDO seria para no mostrar la visual sobre el obstaculo
+			//podriamos no mostrar la visual sobre el obstaculo
 		}
 		else{indice+=1}
 	}
@@ -90,16 +86,13 @@ class ExtensionDeExplosion{
 	}
 	method daniar(elemento){elemento.perder()}
 }
-	
-class ObjetoInvisible{
-	const property position = null
-}
 
 
 
 class Personaje{ 
 	var property image
 	var property position
+	const posicionInicial = position
 	var property nombre = ""
 	var vidas = 3
 	method crear(){
@@ -111,9 +104,11 @@ class Personaje{
 		if(vidas<0){
 			self.morir()
 		}
+		position = posicionInicial
 	}
 	method morir(){
 		game.removeVisual(self)
+		game.clear()
 	}
 	
 	method direccionarVisual(direccion){
@@ -121,13 +116,17 @@ class Personaje{
 	}
 }
 
-class Monstruo inherits Personaje{ //forma de codear al monstruo segun Rodri
-	var velocidad 
+class Monstruo inherits Personaje{ 
+	var property velocidad 
 	var direccion = direccionesPermitidas.anyOne()
 	override method crear(){
 		super()
 		game.onTick(velocidad,"moverse",{self.caminar()})
+		self.configurar()
+		
+		
 	}
+	method configurar(){game.onTick(50,"atacar",{self.atacar()})}
 	method caminar(){
 		
 		if(direccion.esPosible(position,1)){
@@ -137,19 +136,22 @@ class Monstruo inherits Personaje{ //forma de codear al monstruo segun Rodri
 			direccion = direccionesPermitidas.anyOne()
 		}
 	}
-	method atacar()
+	method atacar(){}
 	method efecto(alguien){
 		alguien.perder()
 	}
 }
 
-object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(1,12),nombre="Llama",velocidad=50){
-	const babas = []
+object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(1,12),nombre="Llama",velocidad=10){
+	var baba = null
 	override method atacar(){
-		babas.add(1) //Esto lo puse para despues, no tiene sentido alguno
-		//babas.add(new Baba())
+		baba = new Baba(image = "BabaDer.png", position = position,velocidad = 10, direccionDeBaba = direccion)
+		baba.crear()
+		//baba.direccionar(direccion)
+		
 	}
 } 
+/*
 object carpincho inherits Monstruo(image = "carpinchoD.png", position = game.at(12,12),nombre = "carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	const sonidoMatar=game.sound("risaPatan.mp3")
@@ -161,119 +163,27 @@ object carpincho inherits Monstruo(image = "carpinchoD.png", position = game.at(
 		super(alguien)
 		
 	} 
-}
-
-
-
-
-
-
-
-
-class Monstruo2{ //forma de codear al monstruo segun Ger
-	var property imageI = null
-	var property imageD = null
-	var property image = null
-	var property position = null
-	const movimiento = null
-	const mata = null
-	const sonidoMatar=null
-	method imageI()=imageI
-	method imageD()=imageD
-	method sonidoMatar()=sonidoMatar
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
-//Monstruo hace perder a bomberman	
-	method matar(){
-		if(self.posicion()==bomberman.position()){
-			bomberman.perder()
-			game.sound(sonidoMatar).play()
-		}
-	}
-//Monstruo pierde al ser explotado
-	method perder(){
-		muerte.a(self)
-		game.removeTickEvent(movimiento)
-		game.removeTickEvent(mata)
-	}
-	method crear(){
-		game.addVisual(self)
-	}
-}
-
-//Mata monstruos, no lo apliqué a bomberman.
-object muerte{
-	method a(personaje){
-		game.removeVisual(personaje)
-	}
-
-}
-
-const carpincho1 = new Monstruo2 (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(12,12),movimiento= "carpincho1Moving",mata="carpincho1Asesino",sonidoMatar="risaPatan.mp3")
-const carpincho2 = new Monstruo2 (imageI = "carpinchoI.png",imageD = "carpinchoD.png",image="carpinchoI.png", position = game.at(7,4),movimiento="carpincho2Moving",mata="carpincho2Asesino",sonidoMatar="risaPatan.mp3")
-const direccionamientoCarpincho1 = new Direccionamiento(direction=left,nextPosition=left.next(carpincho1))
-const direccionamientoCarpincho2 = new Direccionamiento (direction=left,nextPosition=left.next(carpincho2))
-
-/* 
-class MonstruoADistancia inherits Monstruo{
-	method escupir(){
-		const baba = new Baba()
-		game.addVisual(baba)
-		babaEnJuego.add(baba)
-	}
-}
-
-class Baba{
-	var property imageI = null
-	var property imageD = null
-	var property image = imageI
-	var property position = null
-	method posicion()=position
-	method imageActual(imageActual){image=imageActual}
-	method posicionar(posicion){position=posicion}
-	
-}
-	LLAMA
-	method escupir(){
-		if(direccion == "derecha"){
-			const baba = new Baba(direccion = direccion, position = position, image = "BabaDer.png")
-		}
-		else {
-			const baba = new Baba(direccion = direccion, position = position, image = "BabaIzq.png")
-		}
-		game.addVisual(baba)
-		babaEnJuego.add(baba)
-	}
-}
-
-class Baba{
-	var property direccion = null
-	var property position = null
-	var property image = null
-	var property posicionAnterior = game.at(0,0)
-	var property posicionSiguiente = game.at(0,0)
-	
-	method avanzar(){
-		if(direccion == "derecha"){
-			posicionAnterior = position
-			posicionSiguiente = derecha.proximaPosicion(position)
-			position = posicionSiguiente
-		}
-		else {
-			posicionAnterior = position
-			posicionSiguiente = izquierda.proximaPosicion(position)
-			position = posicionSiguiente
-		}
-	}
 }*/
-class Baba{
-	var property image = null
-	var property position = null
-	const direccion = null
-	
-	method avanzar(){
-		direccion.movemePara(self, position, 1)
+
+
+
+
+/*
+}
+
+}*/
+class Baba inherits Monstruo {
+	const direccionDeBaba
+	override method perder(){
+		game.removeVisual(self)
 	}
+	override method caminar(){
+		
+		if(direccionDeBaba.esPosible(position,1)){
+			direccionDeBaba.movemePara(self,position,1)
+		}
+		else{game.removeVisual(self)}
+	}
+	override method configurar(){}
 }
 

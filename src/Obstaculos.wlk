@@ -56,8 +56,8 @@ object obstaculosGenerales{
 }
 
 class Agarrable{
-	var property image = null
-	var property position = null
+	var property image
+	var property position
 	method meAgarro(alguien){			
 		self.efecto(alguien)			
 		game.removeVisual(self)

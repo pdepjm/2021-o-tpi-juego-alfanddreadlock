@@ -7,7 +7,6 @@ const direccionesPermitidas = [izquierda,derecha,arriba,abajo]
 class Direccion{
 	
 	var property siguientePosicion=null
-	var property direccionActual=null
 	
 	method movemePara(personaje,posicion,cantidad){
 		siguientePosicion = self.proximaPosicion(posicion,cantidad)
@@ -47,53 +46,4 @@ object abajo inherits Direccion{
 		return posicion.down(cantidad)
 	}
 	method nombre()= "Abajo"
-}
-//Versión de Movimiento de Ger
-object left {
-	method next(objeto)=objeto.position().left(1)
-	}
-object rigth {
-	method next(objeto)=objeto.position().right(1)
-	}
-object down {
-	method next(objeto)=objeto.position().down(1)
-	}
-object up {
-	method next(objeto)=objeto.position().up(1)
-	}
-	
-class Direccionamiento{
-	var nextPosition
-	var direction
-	const directions=[rigth,left,up,down]
-	method direccion()=direction
-	method posicion(personaje)=personaje.position()
-	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
-
-	method moveTo(objeto,direccion){//Mover un personaje, una posición en la dirección elegida.
-		nextPosition=direction.next(objeto)
-		if (self.isPossible(nextPosition))
-		{
-		objeto.position(nextPosition)
-		}
-	}
-	
-	method obstacule(personaje){//Dice si en la próxima posición hay un obstaculo.
-		nextPosition=direction.next(personaje)
-		return self.isPossible(nextPosition)
-	}
-	
-	method otherDirection(){//Elige otra dirección al azar
-		direction=directions.anyOne()		
-}
-
-	method automatic(personaje){//un método de direccionamiento aleatorio para el personaje elegido
-		self.otherDirection()
-		self.moveTo(personaje,direction)
-		if(self.obstacule(personaje))
-		{
-		self.otherDirection()
-		self.moveTo(personaje,direction)
-		}
-	}
 }

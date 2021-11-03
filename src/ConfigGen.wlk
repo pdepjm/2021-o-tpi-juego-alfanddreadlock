@@ -7,7 +7,7 @@ const babaEnJuego = []
 
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	const personajes = [bomberman,carpincho,llama/* ,carpincho1,carpincho2*/]
+	const personajes = [bomberman,llama/* carpincho,carpincho1,carpincho2*/]
 	method configuracionInicial(){
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
@@ -32,7 +32,8 @@ object config{
 		game.onCollideDo(bomberman,{elemento=>elemento.efecto(bomberman)})
 	}
 	method configurarPersonajes(){
-		personajes.forEach{personaje=>personaje.crear()}
+		personajes.forEach{personaje=>personaje.crear()
+		}
 		
 		//game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
 		//game.onTick(1,"carpincho1Asesino",{=>carpincho1.matar()})
