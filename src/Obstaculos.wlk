@@ -30,7 +30,6 @@ class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una 
 			game.removeVisual(self)
 		}
 	}
-	method efecto(alguien){}
 }
 
 class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
@@ -94,4 +93,6 @@ class Bomba {
 		explosion.mostrar(rango)
 		exploto = true
 	}
+	
+	method efecto(alguien){}
 }

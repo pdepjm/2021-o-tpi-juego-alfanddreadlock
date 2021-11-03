@@ -16,7 +16,7 @@ object bomberman inherits Personaje(image = "bomberman.png", position = game.at(
 		position=game.at(0,0)
 	}
 	method moverPara(direccion) {
-		direccion.movemePara(self,position,1) //las direcciones son quienes se encargan de mover al personaje
+		direccion.movemePara(self,self.position(),1) //las direcciones son quienes se encargan de mover al personaje
 	}
 	
 	method ponerBomba(){
@@ -72,23 +72,23 @@ class Explosion{
 	method configurarExplosion(explosion){
 		game.addVisual(explosion)
 		game.sound("bombaSonidoCorto.mp3").play()
-		//game.onCollideDo(explosion,{elemento=>elemento.perder()})
+		game.onCollideDo(explosion,{elemento=>self.daniar(elemento)})
 	}
 	
 	method efecto(algo){
-		algo.perder()
 	}
 	method finDeExplosion(){
 		explosionesVinculadas.forEach{explosion => game.removeVisual(explosion)}
 	}
+	method daniar(elemento){elemento.perder()}
 }
 class ExtensionDeExplosion{
 	const property esPP = false
 	const property position = null
 	method image() = "Explosion0.png"
-	method efecto(alguien){
-		alguien.perder()
+	method efecto(algo){
 	}
+	method daniar(elemento){elemento.perder()}
 }
 	
 class ObjetoInvisible{
@@ -98,8 +98,8 @@ class ObjetoInvisible{
 
 
 class Personaje{ 
-	var property image = null
-	var property position = null
+	var property image
+	var property position
 	var property nombre = ""
 	var vidas = 3
 	method crear(){
@@ -143,14 +143,14 @@ class Monstruo inherits Personaje{ //forma de codear al monstruo segun Rodri
 	}
 }
 
-object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(12,1),nombre="Llama",velocidad=100){
+object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(1,12),nombre="Llama",velocidad=50){
 	const babas = []
 	override method atacar(){
 		babas.add(1) //Esto lo puse para despues, no tiene sentido alguno
 		//babas.add(new Baba())
 	}
 } 
-object carpincho inherits Monstruo(image = "carpinchoD.png", position = game.at(12,12),nombre = "carpincho",velocidad = 100){
+object carpincho inherits Monstruo(image = "carpinchoD.png", position = game.at(12,12),nombre = "carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	const sonidoMatar=game.sound("risaPatan.mp3")
 	override method atacar(){
@@ -267,3 +267,13 @@ class Baba{
 		}
 	}
 }*/
+class Baba{
+	var property image = null
+	var property position = null
+	const direccion = null
+	
+	method avanzar(){
+		direccion.movemePara(self, position, 1)
+	}
+}
+

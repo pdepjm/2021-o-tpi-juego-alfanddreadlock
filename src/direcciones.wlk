@@ -50,16 +50,16 @@ object abajo inherits Direccion{
 }
 //Versión de Movimiento de Ger
 object left {
-	method next(objeto)=objeto.posicion().left(1)
+	method next(objeto)=objeto.position().left(1)
 	}
 object rigth {
-	method next(objeto)=objeto.posicion().right(1)
+	method next(objeto)=objeto.position().right(1)
 	}
 object down {
-	method next(objeto)=objeto.posicion().down(1)
+	method next(objeto)=objeto.position().down(1)
 	}
 object up {
-	method next(objeto)=objeto.posicion().up(1)
+	method next(objeto)=objeto.position().up(1)
 	}
 	
 class Direccionamiento{
@@ -67,14 +67,14 @@ class Direccionamiento{
 	var direction
 	const directions=[rigth,left,up,down]
 	method direccion()=direction
-	method posicion(personaje)=personaje.posicion()
+	method posicion(personaje)=personaje.position()
 	method isPossible(proxPosicion) = obstaculosGenerales.posiciones().contains(proxPosicion).negate()
 
 	method moveTo(objeto,direccion){//Mover un personaje, una posición en la dirección elegida.
 		nextPosition=direction.next(objeto)
 		if (self.isPossible(nextPosition))
 		{
-		objeto.posicionar(nextPosition)
+		objeto.position(nextPosition)
 		}
 	}
 	
@@ -97,5 +97,3 @@ class Direccionamiento{
 		}
 	}
 }
-
-

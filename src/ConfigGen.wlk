@@ -30,7 +30,6 @@ object config{
 	}
 	method configurarColisiones(){
 		game.onCollideDo(bomberman,{elemento=>elemento.efecto(bomberman)})
-		obstaculosGenerales.obstaculos().forEach{obstaculo=>game.onCollideDo(obstaculo,{elemento=>elemento.efecto(obstaculo)})} //muy largo, delegar
 	}
 	method configurarPersonajes(){
 		personajes.forEach{personaje=>personaje.crear()}
