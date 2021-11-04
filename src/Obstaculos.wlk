@@ -38,7 +38,7 @@ class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
 	const imagen
 	const property sonRompibles = false
 	const obstaculosCreados = []
-	
+	method obstaculosCreados()=obstaculosCreados
 	method crear(){
 		posiciones.forEach{posicion=>obstaculosCreados.add(new UnObstaculo (image = imagen, position=posicion,esRompible = sonRompibles))}
 		obstaculosCreados.forEach{obstaculo => self.sumar(obstaculo)}
@@ -50,6 +50,7 @@ class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
 	}
 	
 }
+
 
 object obstaculosGenerales{
 	const property obstaculos = []

@@ -27,6 +27,7 @@ object config{
 		keyboard.down().onPressDo({ bomberman.moverPara(abajo) })
 		keyboard.s().onPressDo({backgroundMusic.mandaleCumbia()})
 		keyboard.space().onPressDo({bomberman.ponerBomba()})
+		keyboard.r().onPressDo({reset.juego()})
 	}
 	method configurarColisiones(){
 		game.onCollideDo(bomberman,{elemento=>elemento.efecto(bomberman)})
@@ -37,6 +38,20 @@ object config{
 		}
 	}
 }
+
+object reset{
+	method obstaculos(){
+		obstaculosGenerales.posiciones().forEach{obstaculo=>obstaculo.clear()}
+	}
+
+	method juego(){
+		self.obstaculos()
+		bomberman.reiniciar()
+		config.configuracionInicial()
+		game.start()
+	}
+}
+
 /*
 object gif{
 	var indice = 0

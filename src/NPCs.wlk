@@ -4,6 +4,28 @@ import ConfigGen.*
 import Obstaculos.*
 import soundProducer.*
 
+class Personaje{ 
+	var property image
+	var property position
+	var property nombre = ""
+	var vidas = 3
+	
+	method crear(){	game.addVisual(self) }
+	method perder(){ 
+		vidas-=1
+		if(vidas<0){
+			self.morir()
+		}
+	}
+	method morir(){
+		game.removeVisual(self)
+		game.clear()
+	}
+	
+	method direccionarVisual(direccion){
+		image = nombre + direccion.nombre() + ".png"
+	}
+}
 
 object bomberman inherits Personaje(image = "BombermanDerecha.png", position = game.at(1,0),nombre="Bomberman"){
 	
@@ -11,9 +33,12 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	const bombasPuestas = []
 	var alcance = 1
 	
-	/*method reiniciarPosicion(){//Bomberman vuelve a la posición de inicio
+	method reiniciar(){//Bomberman vuelve a la posición de inicio
 		position=game.at(0,0)
-	}*/
+		bombasDisponibles=1
+		vidas=3
+		alcance=1
+	}
 	method moverPara(direccion) {
 		direccion.movemePara(self,self.position(),1) //las direcciones son quienes se encargan de mover al personaje
 	}
@@ -87,30 +112,7 @@ class ExtensionDeExplosion{
 
 
 
-class Personaje{ 
-	var property image
-	var property position
-	var property nombre = ""
-	var vidas = 3
-	method crear(){
-		game.addVisual(self)
-		
-	}
-	method perder(){ 
-		vidas-=1
-		if(vidas<0){
-			self.morir()
-		}
-	}
-	method morir(){
-		game.removeVisual(self)
-		game.clear()
-	}
-	
-	method direccionarVisual(direccion){
-		image = nombre + direccion.nombre() + ".png"
-	}
-}
+
 
 class Monstruo inherits Personaje{ 
 	var property velocidad 
