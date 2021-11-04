@@ -1,34 +1,44 @@
 import soundProducer.*
 import NPCs.*
 import direcciones.*
+import Obstaculos.*
 
-
-describe "Mil maneras de morir" {
+describe "colisiones del bomberman" {
 	const baba = new Baba(image = "BabaDerecha.png", position = null, direccionDeBaba = derecha)
 	const explosion = new Explosion()
+	const bombaAgarrable = new BombaExtra(position = null)
+	const fuegoAgarrable = new Fuego(position = null)
 	
 	method initialize() {
 		soundProducer.provider(soundProviderMock)		
 	}
 	 
-	test "Carpincho golpea bomberman"{
+	test "Al colisionar el bomberman con el carpincho, bomberman tiene que perder una vida"{
 		carpinchoSinSonido.efecto(bomberman)
 		assert.equals(2, bomberman.vidas())
 	}
 	
-	test "Llama golpea bomberman"{
+	test "Al colisionar el bomberman con la llama, bomberman tiene que perder una vida"{
 		llama.efecto(bomberman)
 		assert.equals(2, bomberman.vidas())		
 	}
 	
-	test "Baba golpea bomberman"{
+	test "Al colisionar el bomberman con una baba, bomberman tiene que perder una vida"{
 		baba.efecto(bomberman)
 		assert.equals(2, bomberman.vidas())
 	}
 	
-	test "Fuego golpea bomberman"{
+	test "Al colisionar el bomberman con una explosion, bomberman tiene que perder una vida"{
 		explosion.daniar(bomberman)
 		assert.equals(2, bomberman.vidas())
+	}
+	test "Al colisionar el bomberman con un fuego agarrable, bomberman tiene que conseguir mas alcance en sus explosiones"{
+		fuegoAgarrable.daniar(bomberman)
+		assert.equals(2, bomberman.alcance())
+	}
+	test "Al colisionar el bomberman con una bomba agarrable, bomberman tiene que sumar una bomba"{
+		bombaAgarrable.efecto(bomberman)
+		assert.equals(2, bomberman.bombasDisponibles())
 	}
 }
 

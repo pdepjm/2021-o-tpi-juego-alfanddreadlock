@@ -7,16 +7,12 @@ import Obstaculos.*
 	const babasEnJuego = []
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	const personajes = [bomberman/*,llama carpincho,carpincho1,carpincho2*/]
+	const personajes = [bomberman/*,llama , carpincho,carpincho1,carpincho2*/]
 	method configuracionInicial(){
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
 		self.configurarTeclas()
 		self.configurarColisiones()
-//		 Saber qué clase instanciar
-//		 Saber en qué posiciones instanciarlas.
-//		 Sí van a necesitar tener varias listas de posiciones
-
 	}
 
 	
@@ -51,16 +47,5 @@ object reset{
 	}
 }
 
-/*
-object gif{
-	var indice = 0
-	method hacerGif(objeto,imagenes){
-		imagenes.size().times{i=>self.recorrerFrames(objeto,imagenes)}
-	}
-	method recorrerFrames(objeto,imagenes){
-		game.schedule(100,{objeto.modificarImagen(imagenes.get(indice))})
-		indice+=1
-	}
-}*/
 
 

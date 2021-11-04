@@ -11,13 +11,19 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	const bombasPuestas = []
 	var alcance = 1
 	
-	/*method reiniciarPosicion(){//Bomberman vuelve a la posición de inicio
-		position=game.at(0,0)
-	}*/
+	override method crear(){
+		super()
+		game.addVisual(contadorVidas)
+	}
+	method alcance() = alcance
+	method bombasDisponibles() = bombasDisponibles 
 	method moverPara(direccion) {
 		direccion.movemePara(self,self.position(),1) //las direcciones son quienes se encargan de mover al personaje
 	}
-	
+	override method perder(){
+		super()
+		contadorVidas.modificarImagen(self.vidas().toString())
+	}
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
@@ -44,13 +50,15 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 
 
 class Explosion{
-	var property image = "Explosion0.png"
+	const property image = "Explosion0.png"
 	var property position = null
 	var indice = 1
 	const explosionesVinculadas=[]
+	
+	
 	method mostrar(alcance){
 		explosionesVinculadas.add(self)
-		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion??
+		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} 
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(2000,{self.finDeExplosion()})
 	}
@@ -90,7 +98,8 @@ class ExtensionDeExplosion{
 class Personaje{ 
 	var property image
 	var property position
-	var property nombre = ""
+	const posicionInicial = position
+	const nombre
 	var vidas = 3
 	method vidas() = vidas
 	method crear(){
@@ -111,6 +120,11 @@ class Personaje{
 	method direccionarVisual(direccion){
 		image = nombre + direccion.nombre() + ".png"
 	}
+	method reiniciar(){
+		vidas = 3
+		position=posicionInicial
+		game.removeVisual(self)
+	}
 }
 
 class Monstruo inherits Personaje{ 
@@ -123,7 +137,7 @@ class Monstruo inherits Personaje{
 		
 		
 	}
-	method configurar(){game.onTick(1000,"atacar",{self.atacar()})}
+	method configurar(){game.onTick(1500,"atacar",{self.atacar()})}
 	method caminar(){
 		
 		if(direccion.esPosible(position,1)){
@@ -139,13 +153,12 @@ class Monstruo inherits Personaje{
 	}
 }
 
-object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,12),nombre="Llama",velocidad=60000){
+object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,12),nombre="Llama",velocidad=1000){
 	var baba = null
 	override method atacar(){
-		baba = new Baba(image = "BabaDerecha.png", position = position, direccionDeBaba = direccion)
+		baba = new Baba(image = "Baba" + direccion.nombre() + ".png", position = position, direccionDeBaba = direccion)
 		game.addVisual(baba)
 		babasEnJuego.add(baba)
-		//baba.direccionar(direccion)
 		
 	}
 } 
@@ -161,15 +174,15 @@ object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = ga
 		super(alguien)
 		
 	} 
+
 }*/
-
-
-
-
-/*
+object carpinchoSinSonido inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
+	const property velocidadInicial = velocidad
+	override method atacar(){
+		//velocidad -=5
+	}
 }
-
-}*/
+		
 class Baba {
 	var property image
 	var property position
@@ -195,3 +208,11 @@ class Baba {
 	}
 }
 
+object contadorVidas{
+	const property position = game.at(0,13)
+	var property image = "Vidas3.png"
+	const nombre = "Vidas"
+	method modificarImagen(vidas){
+		image = nombre + vidas + ".png"
+	}
+}
