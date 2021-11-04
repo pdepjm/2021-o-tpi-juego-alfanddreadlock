@@ -74,6 +74,7 @@ class Explosion{
 	
 	method configurarExplosion(explosion){
 		game.addVisual(explosion)
+		// TODO: provider
 		game.sound("bombaSonidoCorto.mp3").play()
 		game.onCollideDo(explosion,{elemento=>self.daniar(elemento)})
 	}
@@ -162,7 +163,7 @@ object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,
 		
 	}
 } 
-/*
+
 object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	const sonidoMatar=game.sound("risaPatan.mp3")
@@ -175,7 +176,7 @@ object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = ga
 		
 	} 
 
-}*/
+}
 object carpinchoSinSonido inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	override method atacar(){

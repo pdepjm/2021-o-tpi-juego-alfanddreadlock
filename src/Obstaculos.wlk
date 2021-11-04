@@ -16,8 +16,14 @@ class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una 
 	var poder = null
 	const esRompible = false
 	const poderPosible = [1,2,3,3,3,3].anyOne()
+	
+	// TODO: cambiar nombre
 	method perder(){
+		// TODO: cambiar if por polimorfismo
 		if(esRompible){
+			
+			// TODO: Este if y else hay que delegarlo a otro método.
+			// Además, resolverlo con polimorfismo
 			if(poderPosible==1){
 				poder = new Fuego(position = position) 
 				game.addVisual(poder)
@@ -26,7 +32,10 @@ class UnObstaculo{				//Una clase de lo que sería un obstaculo individual, una 
 				poder = new BombaExtra(position = position)
 				game.addVisual(poder)
 			}
+			// poderPosible.mostrate()
+			// Null Object: patrón de diseño (el No Poder)
 			
+			// no romper encapsulamiento, delegar
 			obstaculosGenerales.obstaculos().remove(self)
 			game.removeVisual(self)
 		}
@@ -37,15 +46,15 @@ class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
 	var property posiciones = []
 	const imagen
 	const property sonRompibles = false
-	const obstaculosCreados = []
-	method obstaculosCreados()=obstaculosCreados
 	method crear(){
-		posiciones.forEach{posicion=>obstaculosCreados.add(new UnObstaculo (image = imagen, position=posicion,esRompible = sonRompibles))}
-		obstaculosCreados.forEach{obstaculo => self.sumar(obstaculo)}
+		posiciones.forEach{posicion=>
+			self.sumar(new UnObstaculo (image = imagen, position=posicion,esRompible = sonRompibles))
+		}
 	}
 	
 	method sumar(obstaculo){
 		game.addVisual(obstaculo)
+		// rompe encapsulamiento, delegar:
 		obstaculosGenerales.obstaculos().add(obstaculo)
 	}
 }
@@ -70,11 +79,10 @@ class Bomba {
 	method efecto(alguien){}
 }
 
-object obstaculosGenerales{
+object obstaculosGenerales {
 	const property obstaculos = []
 	const limites = (0..13).map{i=>game.at(-1,i)} + (0..13).map{i=>game.at(14,i)} + (0..13).map{i=>game.at(i,-1)} + (0..13).map{i=>game.at(i,14)}
 	method posiciones() = self.obstaculos().map{obstaculo=>obstaculo.position()} + limites
-	
 }
 
 class Agarrable{

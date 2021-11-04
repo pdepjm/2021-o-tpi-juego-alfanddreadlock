@@ -7,13 +7,14 @@ import wollok.game.*
 // lo que deben hacer es cambiar el proveedor del soundProducer, asi: soundProducer.provider(soundProviderMock)
 
 object backgroundMusic{
-	const sonido = soundProducer.sound("trompetasBoke.mp3")
+	var sonido 
 	
 	method configurarSonido(){
 			sonido.volume(1)
 		}
 	method mandaleCumbia(){
-		self.configurarSonido()
+		//self.configurarSonido()
+		sonido=soundProducer.sound("trompetasBoke.mp3")
 		sonido.play()
 	}
 }

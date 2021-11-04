@@ -7,7 +7,7 @@ import Obstaculos.*
 	const babasEnJuego = []
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	const personajes = [bomberman/*,llama , carpincho,carpincho1,carpincho2*/]
+	const personajes = [bomberman,llama , carpincho/*,carpincho1,carpincho2*/]
 	method configuracionInicial(){
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
