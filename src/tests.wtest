@@ -2,6 +2,7 @@ import soundProducer.*
 import NPCs.*
 import direcciones.*
 
+
 describe "Mil maneras de morir" {
 	const baba = new Baba(image = "BabaDerecha.png", position = null, direccionDeBaba = derecha)
 	const explosion = new Explosion()
