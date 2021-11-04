@@ -1,11 +1,37 @@
 import soundProducer.*
+import NPCs.*
+import direcciones.*
 
-describe "Inserte descripción" {
+describe "Mil maneras de morir" {
+	const baba = new Baba(image = "BabaDerecha.png", position = null, direccionDeBaba = derecha)
+	const explosion = new Explosion()
+	
 	method initialize() {
 		soundProducer.provider(soundProviderMock)		
 	}
+	 
+	test "Carpincho golpea bomberman"{
+		carpinchoSinSonido.efecto(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
 	
-	test "testX" {
-		assert.that(true)
-	}	
+	test "Llama golpea bomberman"{
+		llama.efecto(bomberman)
+		assert.equals(2, bomberman.vidas())		
+	}
+	
+	test "Baba golpea bomberman"{
+		baba.efecto(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
+	
+	test "Fuego golpea bomberman"{
+		explosion.daniar(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
 }
+
+/* Elegimos testear el metodo efecto ya que es muy importante en nuestro juego y tiene la caracteristica de que es llamado
+ * polimorficamente en el metodo onCollideDo que configura las colisiones contra el bomberman. "elemento.efecto()" sin importar
+ * cual elemento sea, entiende el mensaje y puede aplicar su efecto
+*/

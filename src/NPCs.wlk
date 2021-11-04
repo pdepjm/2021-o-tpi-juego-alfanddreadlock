@@ -92,6 +92,7 @@ class Personaje{
 	var property position
 	var property nombre = ""
 	var vidas = 3
+	method vidas() = vidas
 	method crear(){
 		game.addVisual(self)
 		
@@ -148,7 +149,7 @@ object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,
 		
 	}
 } 
-/*
+
 object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	const sonidoMatar=game.sound("risaPatan.mp3")
@@ -157,18 +158,10 @@ object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = ga
 	}
 	override method efecto(alguien){
 		sonidoMatar.play()
-		super(alguien)
-		
+		super(alguien)		
 	} 
-}*/
-
-
-
-
-/*
 }
 
-}*/
 class Baba {
 	var property image
 	var property position
@@ -193,4 +186,10 @@ class Baba {
 		image = nombre + direccion.nombre() + ".png"
 	}
 }
-
+// Se utiliza exclusivamente para poder testear
+object carpinchoSinSonido inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
+	const property velocidadInicial = velocidad
+	override method atacar(){
+		velocidad -=5
+	}
+}
