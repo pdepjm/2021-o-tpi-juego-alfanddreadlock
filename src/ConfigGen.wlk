@@ -7,7 +7,7 @@ import Obstaculos.*
 	const babasEnJuego = []
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	const personajes = [bomberman,llama/* carpincho,carpincho1,carpincho2*/]
+	const personajes = [bomberman/*,llama carpincho,carpincho1,carpincho2*/]
 	method configuracionInicial(){
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
@@ -33,13 +33,8 @@ object config{
 	}
 	method configurarPersonajes(){
 		personajes.forEach{personaje=>personaje.crear()
-		game.onTick(150,"moverBabas",{babasEnJuego.forEach{baba=>baba.desplazarse()}})
+		game.onTick(500,"moverBabas",{babasEnJuego.forEach{baba=>baba.desplazarse()}})
 		}
-		
-		//game.onTick(200,"carpincho1Moving",{=> direccionamientoCarpincho1.automatic(carpincho1)})
-		//game.onTick(1,"carpincho1Asesino",{=>carpincho1.matar()})
-		//game.onTick(200,"carpincho2Moving",{=> direccionamientoCarpincho2.automatic(carpincho2)})
-		//game.onTick(1,"carpincho2Asesino",{=>carpincho2.matar()}) 
 	}
 }
 /*

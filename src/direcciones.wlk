@@ -1,19 +1,17 @@
 import wollok.game.*
-import ConfigGen.*
 import Obstaculos.*
 
 const direccionesPermitidas = [izquierda,derecha,arriba,abajo]
 
 class Direccion{
 	
-	var property siguientePosicion=null
 	
 	method movemePara(personaje,posicion,cantidad){
-		siguientePosicion = self.proximaPosicion(posicion,cantidad)
 		if(self.esPosible(posicion,cantidad)){
-			personaje.position(siguientePosicion)
+			personaje.position(self.proximaPosicion(posicion,cantidad))
+			
 		}
-		//personaje.direccionar(self)
+		personaje.direccionarVisual(self)
 	}
 	
 	method esPosible(posicion,cantidad){

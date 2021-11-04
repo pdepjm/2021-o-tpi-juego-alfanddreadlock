@@ -5,8 +5,7 @@ import Obstaculos.*
 import soundProducer.*
 
 
-object bomberman inherits Personaje(image = "bomberman.png", position = game.at(1,0)){
-	
+object bomberman inherits Personaje(image = "BombermanDerecha.png", position = game.at(1,0),nombre="Bomberman"){
 	
 	var bombasDisponibles = 1
 	const bombasPuestas = []
@@ -22,7 +21,7 @@ object bomberman inherits Personaje(image = "bomberman.png", position = game.at(
 	method ponerBomba(){
 		self.recuperarBombas()
 		if(bombasDisponibles>0){
-			bombasPuestas.add(new Bomba(position = position))
+			bombasPuestas.add(new Bomba(position = self.position()))
 			bombasDisponibles -=1
 			game.addVisual(bombasPuestas.last())
 			bombasPuestas.last().explotar(alcance)
@@ -53,7 +52,7 @@ class Explosion{
 		explosionesVinculadas.add(self)
 		(1..alcance).forEach{i=>direccionesPermitidas.forEach{direccion=>self.expandirse(direccion,i)}} //se podria hacer un game.schedule para que se muestre como animacion??
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
-		game.schedule(1500,{self.finDeExplosion()})
+		game.schedule(2000,{self.finDeExplosion()})
 	}
 	
 	
@@ -123,7 +122,7 @@ class Monstruo inherits Personaje{
 		
 		
 	}
-	method configurar(){game.onTick(10,"atacar",{self.atacar()})}
+	method configurar(){game.onTick(1000,"atacar",{self.atacar()})}
 	method caminar(){
 		
 		if(direccion.esPosible(position,1)){
@@ -139,10 +138,10 @@ class Monstruo inherits Personaje{
 	}
 }
 
-object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(1,12),nombre="Llama",velocidad=200){
+object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,12),nombre="Llama",velocidad=60000){
 	var baba = null
 	override method atacar(){
-		baba = new Baba(image = "BabaDer.png", position = position, direccionDeBaba = direccion)
+		baba = new Baba(image = "BabaDerecha.png", position = position, direccionDeBaba = direccion)
 		game.addVisual(baba)
 		babasEnJuego.add(baba)
 		//baba.direccionar(direccion)
@@ -150,7 +149,7 @@ object llama inherits Monstruo(image = "LlamaDer.png", position = game.at(1,12),
 	}
 } 
 /*
-object carpincho inherits Monstruo(image = "carpinchoD.png", position = game.at(12,12),nombre = "carpincho",velocidad = 50){
+object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
 	const property velocidadInicial = velocidad
 	const sonidoMatar=game.sound("risaPatan.mp3")
 	override method atacar(){
@@ -174,9 +173,13 @@ class Baba {
 	var property image
 	var property position
 	const direccionDeBaba
+	const nombre = "Baba"
 	method perder(){
 		babasEnJuego.remove(self)
 		game.removeVisual(self)
+	}
+	method efecto(alguien){
+		alguien.perder()
 	}
 	method desplazarse(){
 		
@@ -184,6 +187,10 @@ class Baba {
 			direccionDeBaba.movemePara(self,position,1)
 		}
 		else{self.perder()}
+	}
+	
+	method direccionarVisual(direccion){
+		image = nombre + direccion.nombre() + ".png"
 	}
 }
 
