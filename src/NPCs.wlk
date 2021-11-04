@@ -34,7 +34,7 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	var alcance = 1
 	
 	method reiniciar(){//Bomberman vuelve a la posición de inicio
-		position=game.at(0,0)
+		position=game.at(1,0)
 		bombasDisponibles=1
 		vidas=3
 		alcance=1
@@ -63,9 +63,7 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	}
 	method sumarBomba(){bombasDisponibles+=1}
 	method expandirAlcance(){alcance+=1}
-
 }
-
 
 
 class Explosion{
@@ -79,7 +77,6 @@ class Explosion{
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(2000,{self.finDeExplosion()})
 	}
-	
 	
 	method expandirse(direccion,cantidad){
 		if(direccion.puedeSeguir(position,cantidad)){
@@ -109,9 +106,6 @@ class ExtensionDeExplosion{
 	}
 	method daniar(elemento){elemento.perder()}
 }
-
-
-
 
 
 class Monstruo inherits Personaje{ 

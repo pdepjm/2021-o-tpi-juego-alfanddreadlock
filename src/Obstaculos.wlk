@@ -48,7 +48,6 @@ class EspecieDeObstaculo{		//Una clase con una lista de posiciones.
 		game.addVisual(obstaculo)
 		obstaculosGenerales.obstaculos().add(obstaculo)
 	}
-	
 }
 
 
@@ -87,6 +86,7 @@ class Agarrable{
 	}
 	method perder(){game.removeVisual(self)}
 }
+
 class Fuego inherits Agarrable(image="fuego.png"){
 	override method efecto(alguien){	
 		alguien.expandirAlcance()

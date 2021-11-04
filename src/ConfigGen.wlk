@@ -48,7 +48,6 @@ object reset{
 		self.obstaculos()
 		bomberman.reiniciar()
 		config.configuracionInicial()
-		game.start()
 	}
 }
 
