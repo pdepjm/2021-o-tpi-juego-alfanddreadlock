@@ -4,10 +4,10 @@ import soundProducer.*
 import NPCs.*
 import Obstaculos.*
 
-	const babasEnJuego = []
+const personajes = [bomberman /*,carpincho*/,llama]
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	const personajes = [bomberman,llama , carpincho/*,carpincho1,carpincho2*/]
+	
 	method configuracionInicial(){
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
@@ -23,29 +23,26 @@ object config{
 		keyboard.down().onPressDo({ bomberman.moverPara(abajo) })
 		keyboard.s().onPressDo({backgroundMusic.mandaleCumbia()})
 		keyboard.space().onPressDo({bomberman.ponerBomba()})
-		keyboard.r().onPressDo({reset.juego()})
+		keyboard.r().onPressDo({juego.reset()})
 	}
 	method configurarColisiones(){
-		game.onCollideDo(bomberman,{elemento=>elemento.efecto(bomberman)})
+		game.onCollideDo(bomberman,{elemento=>elemento.meLlevoPuesto(bomberman)})
 	}
 	method configurarPersonajes(){
 		personajes.forEach{personaje=>personaje.crear()
-		game.onTick(500,"moverBabas",{babasEnJuego.forEach{baba=>baba.desplazarse()}})
+		
 		}
 	}
 }
 
-object reset{
-	method obstaculos(){
-		obstaculosGenerales.posiciones().forEach{obstaculo=>obstaculo.clear()}
-	}
-
-	method juego(){
-		self.obstaculos()
-		bomberman.reiniciar()
+object juego{
+	method reset(){
+		game.clear()
 		config.configuracionInicial()
+		
 	}
 }
+
 
 
 

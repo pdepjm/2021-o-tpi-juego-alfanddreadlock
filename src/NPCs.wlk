@@ -4,16 +4,46 @@ import ConfigGen.*
 import Obstaculos.*
 import soundProducer.*
 
+class Personaje{ 
+	var property image
+	var property position = positionI
+	const positionI 
+	const nombre
+	var vidas = 3
+	method vidas() = vidas
+	method crear(){
+		vidas=3
+		position=positionI
+		game.addVisual(self)
+		
+	}
+	method perder(){ 
+		vidas-=1
+		if(vidas<0){
+			self.morir()
+		}
+	}
+	method meExplotoUnaBombaEncima(){self.perder()}
+	method morir(){
+		game.removeVisual(self)
+	}
+	
+	method direccionarVisual(direccion){
+		image = nombre + direccion.nombre() + ".png"
+	}
+}
 
-object bomberman inherits Personaje(image = "BombermanDerecha.png", position = game.at(1,0),nombre="Bomberman"){
+object bomberman inherits Personaje(image = "BombermanDerecha.png", positionI = game.at(1,0),nombre="Bomberman"){
 	
 	var bombasDisponibles = 1
 	const bombasPuestas = []
 	var alcance = 1
 	
 	override method crear(){
+		bombasDisponibles=1
+		alcance=1
 		super()
-		game.addVisual(contadorVidas)
+		contadorVidas.aparecer()
 	}
 	method alcance() = alcance
 	method bombasDisponibles() = bombasDisponibles 
@@ -22,7 +52,11 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	}
 	override method perder(){
 		super()
-		contadorVidas.modificarImagen(self.vidas().toString())
+		contadorVidas.modificarImagen(vidas)
+	}
+	override method morir(){
+		super()
+		juego.reset()
 	}
 	method ponerBomba(){
 		self.recuperarBombas()
@@ -35,6 +69,8 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 		else{
 			game.say(self, "Bombas Insuficientes")
 		}
+		game.removeVisual(self)
+		game.addVisual(self)
 	}
 	method recuperarBombas(){
 		bombasPuestas.forEach{bomba=>if(bomba.exploto()){
@@ -44,17 +80,68 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", position = g
 	}
 	method sumarBomba(){bombasDisponibles+=1}
 	method expandirAlcance(){alcance+=1}
-
 }
 
-
-
-class Explosion{
-	const property image = "Explosion0.png"
-	var property position = null
-	var indice = 1
-	const explosionesVinculadas=[]
+class Monstruo inherits Personaje{ 
+	var property velocidad 
+	var direccion = direccionesPermitidas.anyOne()
 	
+	override method crear(){
+		super()
+		game.onTick(1500,"atacar",{self.atacar()})
+		self.establecerVelocidad()
+	}
+	
+	method establecerVelocidad(){
+		game.schedule(velocidad,{self.caminar()})
+	}
+	
+	method caminar(){
+		if(direccion.esPosible(position,1)){
+			direccion.movemePara(self,position,1)
+		}
+		else{
+			direccion = direccionesPermitidas.anyOne()
+		}
+		self.establecerVelocidad()
+	}
+	method atacar(){}
+	method meLlevoPuesto(alguien){
+		alguien.perder()
+	}
+}
+
+object llama inherits Monstruo(image = "LlamaDerecha.png", positionI = game.at(1,12),nombre="Llama",velocidad=1000){
+	var baba = null
+	override method atacar(){
+		baba = new Baba(image = "Baba" + direccion.nombre() + ".png", position = position, direccionDeBaba = direccion)
+		game.addVisual(baba)
+		game.onTick(250,"moverBaba",{baba.desplazarse()})
+	}
+} 
+
+object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", positionI = game.at(12,12),nombre = "Carpincho",velocidad = 50){
+	const property velocidadInicial = velocidad
+	override method atacar(){
+		velocidad -=5
+	}
+	override method meLlevoPuesto(alguien){
+		self.sonido().play()
+		super(alguien)
+		
+	}
+	method sonido() = soundProducer.sound("risaPatan.mp3")
+
+}
+object carpinchoSinSonido inherits Monstruo(image = "CarpinchoDerecha.png", positionI = game.at(12,12),nombre = "Carpincho",velocidad = 50){
+	const property velocidadInicial = velocidad
+	override method atacar(){
+		//velocidad -=5
+	}
+}
+		
+class ExplosionCentral inherits ExplosionGenerica{
+	const explosionesVinculadas=[]
 	
 	method mostrar(alcance){
 		explosionesVinculadas.add(self)
@@ -62,138 +149,42 @@ class Explosion{
 		explosionesVinculadas.forEach{explosion => self.configurarExplosion(explosion)}
 		game.schedule(2000,{self.finDeExplosion()})
 	}
-	
-	
+		
 	method expandirse(direccion,cantidad){
 		if(direccion.puedeSeguir(position,cantidad)){
-				explosionesVinculadas.add(new ExtensionDeExplosion(position = direccion.proximaPosicion(position,cantidad))) 
-			//podriamos no mostrar la visual sobre el obstaculo
+				explosionesVinculadas.add(new ExplosionGenerica(position = direccion.proximaPosicion(position,cantidad))) 
 		}
-		else{indice+=1}
 	}
 	
 	method configurarExplosion(explosion){
 		game.addVisual(explosion)
-		// TODO: provider
-		game.sound("bombaSonidoCorto.mp3").play()
+		
+		self.sonido().play()
 		game.onCollideDo(explosion,{elemento=>self.daniar(elemento)})
 	}
-	
-	method efecto(algo){
-	}
+	method sonido() = soundProducer.sound("bombaSonidoCorto.mp3")
 	method finDeExplosion(){
 		explosionesVinculadas.forEach{explosion => game.removeVisual(explosion)}
 	}
-	method daniar(elemento){elemento.perder()}
 }
-class ExtensionDeExplosion{
+class ExplosionGenerica{
 	const property position = null
 	method image() = "Explosion0.png"
-	method efecto(algo){
-	}
-	method daniar(elemento){elemento.perder()}
+	method meLlevoPuesto(algo){}
+	method daniar(elemento){elemento.meExplotoUnaBombaEncima()}
+	method meExplotoUnaBombaEncima(){}
 }
-
-
-
-class Personaje{ 
-	var property image
-	var property position
-	const posicionInicial = position
-	const nombre
-	var vidas = 3
-	method vidas() = vidas
-	method crear(){
-		game.addVisual(self)
-		
-	}
-	method perder(){ 
-		vidas-=1
-		if(vidas<0){
-			self.morir()
-		}
-	}
-	method morir(){
-		game.removeVisual(self)
-		game.clear()
-	}
-	
-	method direccionarVisual(direccion){
-		image = nombre + direccion.nombre() + ".png"
-	}
-	method reiniciar(){
-		vidas = 3
-		position=posicionInicial
-		game.removeVisual(self)
-	}
-}
-
-class Monstruo inherits Personaje{ 
-	var property velocidad 
-	var direccion = direccionesPermitidas.anyOne()
-	override method crear(){
-		super()
-		game.onTick(velocidad,"moverse",{self.caminar()})
-		self.configurar()
-		
-		
-	}
-	method configurar(){game.onTick(1500,"atacar",{self.atacar()})}
-	method caminar(){
-		
-		if(direccion.esPosible(position,1)){
-			direccion.movemePara(self,position,1)
-		}
-		else{
-			direccion = direccionesPermitidas.anyOne()
-		}
-	}
-	method atacar(){}
-	method efecto(alguien){
-		alguien.perder()
-	}
-}
-
-object llama inherits Monstruo(image = "LlamaDerecha.png", position = game.at(1,12),nombre="Llama",velocidad=1000){
-	var baba = null
-	override method atacar(){
-		baba = new Baba(image = "Baba" + direccion.nombre() + ".png", position = position, direccionDeBaba = direccion)
-		game.addVisual(baba)
-		babasEnJuego.add(baba)
-		
-	}
-} 
-
-object carpincho inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
-	const property velocidadInicial = velocidad
-	const sonidoMatar=game.sound("risaPatan.mp3")
-	override method atacar(){
-		velocidad -=5
-	}
-	override method efecto(alguien){
-		sonidoMatar.play()
-		super(alguien)
-		
-	} 
-
-}
-object carpinchoSinSonido inherits Monstruo(image = "CarpinchoDerecha.png", position = game.at(12,12),nombre = "Carpincho",velocidad = 50){
-	const property velocidadInicial = velocidad
-	override method atacar(){
-		//velocidad -=5
-	}
-}
-		
+//Falta solo mejorar la forma en que la llama escupe
 class Baba {
 	var property image
 	var property position
 	const direccionDeBaba
 	const nombre = "Baba"
 	method perder(){
-		babasEnJuego.remove(self)
+		game.removeTickEvent("moverBaba")
 		game.removeVisual(self)
 	}
-	method efecto(alguien){
+	method meLlevoPuesto(alguien){
 		alguien.perder()
 	}
 	method desplazarse(){
@@ -213,7 +204,14 @@ object contadorVidas{
 	const property position = game.at(0,13)
 	var property image = "Vidas3.png"
 	const nombre = "Vidas"
+	method aparecer(){
+		image = "Vidas3.png"
+		game.addVisual(self)
+	}
 	method modificarImagen(vidas){
-		image = nombre + vidas + ".png"
+		if(vidas>0){
+			image = nombre + vidas.toString() + ".png"
+		}
+		else{game.removeVisual(self)}
 	}
 }

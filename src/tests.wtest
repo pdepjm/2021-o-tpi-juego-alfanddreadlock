@@ -5,7 +5,7 @@ import Obstaculos.*
 
 describe "colisiones del bomberman" {
 	const baba = new Baba(image = "BabaDerecha.png", position = null, direccionDeBaba = derecha)
-	const explosion = new Explosion()
+	const explosion = new ExplosionCentral()
 	const bombaAgarrable = new BombaExtra(position = null)
 	const fuegoAgarrable = new Fuego(position = null)
 	
@@ -14,12 +14,12 @@ describe "colisiones del bomberman" {
 	}
 	 
 	test "Al colisionar el bomberman con el carpincho, bomberman tiene que perder una vida"{
-		carpinchoSinSonido.efecto(bomberman)
+		carpinchoSinSonido.meLlevoPuesto(bomberman)
 		assert.equals(2, bomberman.vidas())
 	}
 	
 	test "Al colisionar el bomberman con la llama, bomberman tiene que perder una vida"{
-		llama.efecto(bomberman)
+		llama.meLlevoPuesto(bomberman)
 		assert.equals(2, bomberman.vidas())		
 	}
 	
