@@ -9,6 +9,6 @@ program juego {
 	game.height(14)
 	game.width(14)
 	game.boardGround("fondo.png")
-	config.configuracionInicial()
+	config.inicio()
 	game.start()
 }

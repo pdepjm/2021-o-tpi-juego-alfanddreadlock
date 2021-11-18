@@ -4,11 +4,15 @@ import soundProducer.*
 import NPCs.*
 import Obstaculos.*
 
-const personajes = [bomberman /*,carpincho*/,llama]
+const personajes = [bomberman /*,carpincho,*/,llama]
 object config{
 	const obstaculosPosibles = [troncos,rocas,plantasD,plantasA,plantasI]
-	
+	method inicio(){
+		game.addVisual(pantallaInicial)
+		keyboard.x().onPressDo({juego.reset()})
+	}
 	method configuracionInicial(){
+		
 		obstaculosPosibles.forEach{obstaculo=>obstaculo.crear()}//Se repite este forEach tanto aca como en personajes
 		self.configurarPersonajes()
 		self.configurarTeclas()
@@ -39,8 +43,11 @@ object juego{
 	method reset(){
 		game.clear()
 		config.configuracionInicial()
-		
 	}
+}
+object pantallaInicial{
+	var property image = "ImagenInicio.png"
+	var property position = game.at(0,0)
 }
 
 

@@ -85,10 +85,13 @@ object bomberman inherits Personaje(image = "BombermanDerecha.png", positionI = 
 class Monstruo inherits Personaje{ 
 	var property velocidad 
 	var direccion = direccionesPermitidas.anyOne()
-	
+	override method perder(){
+		super()
+		game.removeTickEvent("atacar")
+	}
 	override method crear(){
 		super()
-		game.onTick(1500,"atacar",{self.atacar()})
+		game.onTick(2000,"atacar",{self.atacar()})
 		self.establecerVelocidad()
 	}
 	
@@ -116,7 +119,7 @@ object llama inherits Monstruo(image = "LlamaDerecha.png", positionI = game.at(1
 	override method atacar(){
 		baba = new Baba(image = "Baba" + direccion.nombre() + ".png", position = position, direccionDeBaba = direccion)
 		game.addVisual(baba)
-		game.onTick(250,"moverBaba",{baba.desplazarse()})
+		baba.desplazarse()
 	}
 } 
 
@@ -174,14 +177,12 @@ class ExplosionGenerica{
 	method daniar(elemento){elemento.meExplotoUnaBombaEncima()}
 	method meExplotoUnaBombaEncima(){}
 }
-//Falta solo mejorar la forma en que la llama escupe
 class Baba {
 	var property image
 	var property position
 	const direccionDeBaba
 	const nombre = "Baba"
 	method perder(){
-		game.removeTickEvent("moverBaba")
 		game.removeVisual(self)
 	}
 	method meLlevoPuesto(alguien){
@@ -191,6 +192,7 @@ class Baba {
 		
 		if(direccionDeBaba.esPosible(position,1)){
 			direccionDeBaba.movemePara(self,position,1)
+			game.schedule(150,{self.desplazarse()}) //No se mueve tan rapido como deberia (cada 150ms) 
 		}
 		else{self.perder()}
 	}
