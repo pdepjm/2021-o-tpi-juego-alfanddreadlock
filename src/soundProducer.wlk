@@ -6,6 +6,18 @@ import wollok.game.*
 // Si sus tests fallan porque les dice que no pueden iniciar sonidos antes de que empiece el juego
 // lo que deben hacer es cambiar el proveedor del soundProducer, asi: soundProducer.provider(soundProviderMock)
 
+object backgroundMusic{
+	var sonido 
+	
+	method configurarSonido(){
+			sonido.volume(1)
+		}
+	method mandaleCumbia(){
+		//self.configurarSonido()
+		sonido=soundProducer.sound("trompetasBoke.mp3")
+		sonido.play()
+	}
+}
 object soundProducer {
 	
 	var provider = game
@@ -20,7 +32,7 @@ object soundProducer {
 
 object soundProviderMock {
 	
-	method sound(audioFile) = soundMock
+	method sound(archivoDeAudio) = soundMock
 	
 }
 

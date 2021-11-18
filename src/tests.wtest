@@ -1,11 +1,48 @@
 import soundProducer.*
+import NPCs.*
+import direcciones.*
+import Obstaculos.*
 
-describe "Inserte descripción" {
+describe "colisiones del bomberman" {
+	const baba = new Baba(image = "BabaDerecha.png", position = null, direccionDeBaba = derecha)
+	const explosion = new ExplosionCentral()
+	const bombaAgarrable = new BombaExtra(position = null)
+	const fuegoAgarrable = new Fuego(position = null)
+	
 	method initialize() {
 		soundProducer.provider(soundProviderMock)		
 	}
+	 
+	test "Al colisionar el bomberman con el carpincho, bomberman tiene que perder una vida"{
+		carpinchoSinSonido.meLlevoPuesto(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
 	
-	test "testX" {
-		assert.that(true)
-	}	
+	test "Al colisionar el bomberman con la llama, bomberman tiene que perder una vida"{
+		llama.meLlevoPuesto(bomberman)
+		assert.equals(2, bomberman.vidas())		
+	}
+	
+	test "Al colisionar el bomberman con una baba, bomberman tiene que perder una vida"{
+		baba.efecto(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
+	
+	test "Al colisionar el bomberman con una explosion, bomberman tiene que perder una vida"{
+		explosion.daniar(bomberman)
+		assert.equals(2, bomberman.vidas())
+	}
+	test "Al colisionar el bomberman con un fuego agarrable, bomberman tiene que conseguir mas alcance en sus explosiones"{
+		fuegoAgarrable.daniar(bomberman)
+		assert.equals(2, bomberman.alcance())
+	}
+	test "Al colisionar el bomberman con una bomba agarrable, bomberman tiene que sumar una bomba"{
+		bombaAgarrable.efecto(bomberman)
+		assert.equals(2, bomberman.bombasDisponibles())
+	}
 }
+
+/* Elegimos testear el metodo efecto ya que es muy importante en nuestro juego y tiene la caracteristica de que es llamado
+ * polimorficamente en el metodo onCollideDo que configura las colisiones contra el bomberman. "elemento.efecto()" sin importar
+ * cual elemento sea, entiende el mensaje y puede aplicar su efecto
+*/
